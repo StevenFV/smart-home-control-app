@@ -20,6 +20,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authentication User For Development
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the user authentication credentials for development.
+    |
+    */
+    'dev' => [
+        'guard' => env('AUTH_GUARD', 'web'),
+        'name' => env('AUTH_NAME', 'User Name'),
+        'email' => env('AUTH_EMAIL', 'dev@email.com'),
+        'passwords' => env('AUTH_PASSWORD', 'passwords'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
     |

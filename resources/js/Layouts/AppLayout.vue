@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import {trans} from "laravel-vue-i18n";
 
 defineProps({
     title: String,
@@ -49,7 +50,10 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    {{ trans('dashboard.dashboard') }}
+                                </NavLink>
+                                <NavLink :href="route('lighting.index')" :active="route().current('lighting')">
+                                    {{ trans('lighting.index') }}
                                 </NavLink>
                             </div>
                         </div>
@@ -140,6 +144,11 @@ const logout = () => {
 
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
+                                        </DropdownLink>
+
+                                        <DropdownLink :href="route('locale', { locale: $page.props.locale })">
+                                            Switch Langue
+                                            {{ $page.props.locale }}
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">

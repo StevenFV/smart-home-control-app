@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PermissionRole;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -27,10 +28,12 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => config('auth.dev.name') ?? fake()->name(),
+            'email' => config('auth.dev.email') ?? fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => static::$password ??=
+                Hash::make(config('auth.dev.passwords')) ??
+                Hash::make(config('auth.defaults.passwords')),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
@@ -67,6 +70,26 @@ class UserFactory extends Factory
                 ])
                 ->when(is_callable($callback), $callback),
             'ownedTeams'
-        );
+        )->afterCreating(function (User $user) {
+            $team = $user->ownedTeams()->first();
+            if ($team) {
+                $user->current_team_id = $team->id;
+                $user->save();
+            }
+        });
+    }
+
+    /**
+     * Indicate that the user should have an admin role.
+     */
+    public function withAdminRole(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $team = $user->ownedTeams()->first();
+
+            if ($team) {
+                $team->users()->attach($user->id, ['role' => PermissionRole::ADMIN]);
+            }
+        });
     }
 }
