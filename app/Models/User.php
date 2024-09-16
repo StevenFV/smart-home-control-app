@@ -52,6 +52,16 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function hasRole(string $role): bool
+    {
+        return $this->getRole() === $role;
+    }
+
+    private function getRole(): string | null
+    {
+        return $this->currentTeam->users()->where('users.id', $this->id)->first()->membership->role ?? null;
+    }
+
     /**
      * Get the attributes that should be cast.
      *

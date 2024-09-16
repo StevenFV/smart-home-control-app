@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\DeviceModelClassName;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->withPersonalTeam()->create();
+        $this->call([
+            AdminUserWithTeamAndRoleSeeder::class,
+        ]);
 
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->callWith(StoreDevicesIdentificationSeeder::class, [
+            'deviceModelClassName' => DeviceModelClassName::LIGHTING->value,
         ]);
     }
 }
