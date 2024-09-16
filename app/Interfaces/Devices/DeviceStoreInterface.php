@@ -10,5 +10,5 @@ interface DeviceStoreInterface
 
     public function data(Model $model): string | array;
 
-    public function fetchAndProcessMqttMessages($topicFilter): string | array;
+    public function fetchAndProcessMqttMessages(string $topicFilter): string | array;
 }

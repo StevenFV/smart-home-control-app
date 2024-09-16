@@ -12,6 +12,6 @@ class AdminUserWithTeamAndRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        (new UserFactory())->withPersonalTeam()->withAdminRole()->create()->first();
+        (new UserFactory())->withPersonalTeam()->withAdminRole()->create();
     }
 }
