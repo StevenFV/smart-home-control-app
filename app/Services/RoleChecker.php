@@ -8,7 +8,6 @@ class RoleChecker
 {
     /**
      * Check if the user has any of the given roles.
-     *
      */
     public function userHasAnyRole(User $user, array $roles): bool
     {

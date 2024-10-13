@@ -57,7 +57,7 @@ class User extends Authenticatable
         return $this->getRole() === $role;
     }
 
-    private function getRole(): string | null
+    private function getRole(): ?string
     {
         return $this->currentTeam->users()->where('users.id', $this->id)->first()->membership->role ?? null;
     }

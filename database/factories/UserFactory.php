@@ -16,24 +16,20 @@ use Laravel\Jetstream\Features;
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
-    /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * The first user created by UserFactory is a developer user with dev password from the configuration.
+     * Later users are fake users with default password from the configuration.
      */
     public function definition(): array
     {
         return [
-            'name' => config('auth.dev.name') ?? fake()->name(),
-            'email' => config('auth.dev.email') ?? fake()->unique()->safeEmail(),
+            'name' => $this->isUserDevExist() ? fake()->name() : config('auth.dev.name'),
+            'email' => $this->isUserDevExist() ? fake()->unique()->safeEmail() : config('auth.dev.email'),
             'email_verified_at' => now(),
-            'password' => static::$password ??=
-                Hash::make(config('auth.dev.passwords')) ??
-                Hash::make(config('auth.defaults.passwords')),
+            'password' => $this->isUserDevExist() ?
+                Hash::make(config('auth.defaults.passwords')) :
+                Hash::make(config('auth.dev.passwords')),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
@@ -47,7 +43,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
@@ -63,13 +59,13 @@ class UserFactory extends Factory
 
         return $this->has(
             Team::factory()
-                ->state(fn (array $attributes, User $user) => [
-                    'name' => $user->name.'\'s Team',
+                ->state(fn(array $attributes, User $user) => [
+                    'name' => $user->name . '\'s Team',
                     'user_id' => $user->id,
                     'personal_team' => true,
                 ])
                 ->when(is_callable($callback), $callback),
-            'ownedTeams'
+            'ownedTeams',
         )->afterCreating(function (User $user) {
             $team = $user->ownedTeams()->first();
             if ($team) {
@@ -91,5 +87,27 @@ class UserFactory extends Factory
                 $team->users()->attach($user->id, ['role' => PermissionRole::ADMIN]);
             }
         });
+    }
+
+    /**
+     * Checks if a developer user exists based on the email provided in the configuration.
+     *
+     * @return bool True if the developer user exists, otherwise false.
+     */
+    public static function isUserDevExist(): bool
+    {
+        return User::where('email', config('auth.dev.email'))->exists();
+    }
+
+    /**
+     * Retrieves the user password based on the existence of a developer user.
+     *
+     * This method selects the appropriate password according to the UserFactory::definition() logic.
+     *
+     * @return string The selected password from the configuration.
+     */
+    public static function getUserPassword(): string
+    {
+        return UserFactory::isUserDevExist() ? config('auth.dev.passwords') : config('auth.defaults.passwords');
     }
 }

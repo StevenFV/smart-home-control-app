@@ -20,7 +20,7 @@ class HeatingController extends AbstractDataConstructor
     public function index(): Response
     {
         return Inertia::render('Heating/Index', [
-            'heatingData' => $this->dataForFrontend()
+            'heatingData' => $this->dataForFrontend(),
         ]);
     }
 }

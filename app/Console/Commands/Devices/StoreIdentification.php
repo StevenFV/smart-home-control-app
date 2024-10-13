@@ -20,7 +20,9 @@ class StoreIdentification extends Command implements DeviceStoreInterface
     use DeviceModelNamespaceResolverTrait;
 
     protected $signature = 'device:store-identification {deviceModelClassName}';
+
     protected $description = 'Get device identifications from mqtt broker and put to home-control-app database';
+
     private string $message;
 
     public function handle(): void
@@ -39,7 +41,7 @@ class StoreIdentification extends Command implements DeviceStoreInterface
         foreach ($identifications as $identification) {
             $model->updateOrCreate(
                 ['ieee_address' => $identification['ieee_address']],
-                ['friendly_name' => $identification['friendly_name']]
+                ['friendly_name' => $identification['friendly_name']],
             );
         }
     }
@@ -55,7 +57,7 @@ class StoreIdentification extends Command implements DeviceStoreInterface
         return $this->getFilteredAndFormattedIdentifications($parsedMqttMessages, $modelBaseName);
     }
 
-    public function fetchAndProcessMqttMessages($topicFilter): string | array
+    public function fetchAndProcessMqttMessages($topicFilter): string|array
     {
         $mqtt = MQTT::connection();
 
@@ -72,10 +74,10 @@ class StoreIdentification extends Command implements DeviceStoreInterface
 
             return $this->message;
         } catch (
-            ProtocolViolationException |
-            InvalidMessageException |
-            MqttClientException |
-            RepositoryException |
+            ProtocolViolationException|
+            InvalidMessageException|
+            MqttClientException|
+            RepositoryException|
             DataTransferException
             $exception
         ) {
@@ -86,12 +88,13 @@ class StoreIdentification extends Command implements DeviceStoreInterface
     private function getModelBaseName(Model $model): string
     {
         $tableName = $model->getTable();
+
         return Str::singular(Str::after($tableName, '.'));
     }
 
     private function getFilteredAndFormattedIdentifications(
         array $parsedMqttMessages,
-        string $modelBaseName
+        string $modelBaseName,
     ): array {
         $filteredIdentifications = $this->filterIdentifications($parsedMqttMessages, $modelBaseName);
 
@@ -110,7 +113,7 @@ class StoreIdentification extends Command implements DeviceStoreInterface
         return array_map(function ($identification) {
             return [
                 'ieee_address' => $identification->ieee_address,
-                'friendly_name' => $identification->friendly_name
+                'friendly_name' => $identification->friendly_name,
             ];
         }, $filteredIdentifications);
     }

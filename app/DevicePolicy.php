@@ -30,7 +30,6 @@ class DevicePolicy extends Controller
         });
     }
 
-
     private function isAdmin(User $user): bool
     {
         return $user->can(PermissionRole::ADMIN->value);

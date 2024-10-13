@@ -8,7 +8,7 @@ interface DeviceStoreInterface
 {
     public function store(Model $model): void;
 
-    public function data(Model $model): string | array;
+    public function data(Model $model): string|array;
 
-    public function fetchAndProcessMqttMessages(string $topicFilter): string | array;
+    public function fetchAndProcessMqttMessages(string $topicFilter): string|array;
 }

@@ -24,7 +24,7 @@ class LightingController extends AbstractDataConstructor
     public function index(): Response
     {
         return Inertia::render('Lighting/Index', [
-            'lightingData' => $this->dataForFrontend()
+            'lightingData' => $this->dataForFrontend(),
         ]);
     }
 

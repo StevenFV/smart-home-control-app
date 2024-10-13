@@ -21,7 +21,7 @@ abstract class AbstractDataConstructor
         return $this->model->all()->map(function ($model) use ($fillableAttributes) {
             $data = [
                 'friendlyName' => $model->friendly_name,
-                'data' => []
+                'data' => [],
             ];
 
             $attributes = method_exists($model, 'toArrayWithoutIeeeAddress') ? $model->toArrayWithoutIeeeAddress() : $model->toArray();
