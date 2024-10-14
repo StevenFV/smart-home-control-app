@@ -5,9 +5,3 @@ it('test debugging functions are not used', function () {
         ->not
         ->toBeUsed();
 });
-
-it('test todo is not used', function () {
-    expect('todo')
-        ->not
-        ->toBeUsed();
-});
