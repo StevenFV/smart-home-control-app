@@ -53,9 +53,6 @@ jobs:
       - name: Make migrations
         run: php artisan migrate
 
-      - name: Seed the database
-        run: php artisan db:seed
-
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
