@@ -41,6 +41,9 @@ jobs:
           echo APP_ENV=testing >> .env
           echo APP_KEY= >> .env
 
+      - name: Update Composer
+        run: composer update
+
       - name: Install Dependencies
         run: composer install
 
