@@ -23,11 +23,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $isUserDevExist = self::isUserDevExist();
+
         return [
-            'name' => $this->isUserDevExist() ? fake()->name() : config('auth.dev.name'),
-            'email' => $this->isUserDevExist() ? fake()->unique()->safeEmail() : config('auth.dev.email'),
+            'name' => $isUserDevExist ? fake()->name() : config('auth.dev.name'),
+            'email' => $isUserDevExist ? fake()->unique()->safeEmail() : config('auth.dev.email'),
             'email_verified_at' => now(),
-            'password' => $this->isUserDevExist() ?
+            'password' => $isUserDevExist ?
                 Hash::make(config('auth.defaults.passwords')) :
                 Hash::make(config('auth.dev.passwords')),
             'two_factor_secret' => null,

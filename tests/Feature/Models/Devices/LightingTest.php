@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Devices\Lighting;
+use Carbon\Carbon;
 
 it('creates lighting model successfully', function () {
     $lighting = Lighting::factory()->create();
@@ -21,7 +22,8 @@ it('creates lighting model successfully', function () {
 it('updates lighting model successfully', function () {
     $lighting = Lighting::factory()->create();
 
-    sleep(1); // to make sure updated_at is different (1-second delay)
+    $originalTime = Carbon::now();
+    Carbon::setTestNow($originalTime->addSecond());
 
     $newState = $lighting->state === 'on' ? 'off' : 'on';
     $originalUpdatedAt = $lighting->updated_at;
