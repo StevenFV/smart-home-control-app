@@ -10,7 +10,7 @@ trait DeviceModelNamespaceResolverTrait
     {
         $namespace = 'App\Models\Devices\\';
 
-        if (!class_exists($namespace . $deviceModelClassName)) {
+        if (! class_exists($namespace . $deviceModelClassName)) {
             abort(404, 'Model class not found.');
         }
 

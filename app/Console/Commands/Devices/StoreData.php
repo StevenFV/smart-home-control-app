@@ -19,6 +19,7 @@ class StoreData extends Command implements DeviceStoreInterface
     use DeviceModelNamespaceResolverTrait;
 
     protected $signature = 'device:store-data {deviceModelClassName}';
+
     protected $description = 'Get device data from mqtt broker and put to home-control-app database';
 
     public function handle(): void
@@ -47,10 +48,11 @@ class StoreData extends Command implements DeviceStoreInterface
         $topicFilters = array_map(function ($friendlyName) {
             return Zigbee2MqttUtility::BASE_TOPIC->value . $friendlyName;
         }, $friendlyNames);
+
         return array_map([$this, 'fetchAndProcessMqttMessages'], $topicFilters);
     }
 
-    public function fetchAndProcessMqttMessages($topicFilter): string | array
+    public function fetchAndProcessMqttMessages($topicFilter): string|array
     {
         $mqtt = MQTT::connection();
 
@@ -64,16 +66,16 @@ class StoreData extends Command implements DeviceStoreInterface
             );
             $mqtt->publish(
                 $topicFilter . Zigbee2MqttUtility::GET->value,
-                Zigbee2MqttUtility::STATE_DEVICE_PAYLOAD->value
+                Zigbee2MqttUtility::STATE_DEVICE_PAYLOAD->value,
             );
             $mqtt->loop();
 
             return $messageDetails;
         } catch (
-            ProtocolViolationException |
-            InvalidMessageException |
-            MqttClientException |
-            RepositoryException |
+            ProtocolViolationException|
+            InvalidMessageException|
+            MqttClientException|
+            RepositoryException|
             DataTransferException
             $exception
         ) {
@@ -85,13 +87,13 @@ class StoreData extends Command implements DeviceStoreInterface
     {
         return [
             'topic' => $topic,
-            'message' => $message
+            'message' => $message,
         ];
     }
 
     private function updateOrCreateDeviceData(Model $model, array $information): void
     {
-        $friendlyName = str_replace("zigbee2mqtt/", "", $information['topic']);
+        $friendlyName = str_replace('zigbee2mqtt/', '', $information['topic']);
         $message = json_decode($information['message']);
         $deviceData = array_slice($model->getFillable(), 2);
 
@@ -100,7 +102,7 @@ class StoreData extends Command implements DeviceStoreInterface
                 ['friendly_name' => $friendlyName],
                 [
                     $data => $message->$data ?? null,
-                ]
+                ],
             );
         }
     }

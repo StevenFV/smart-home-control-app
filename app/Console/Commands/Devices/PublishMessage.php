@@ -17,7 +17,6 @@ class PublishMessage extends Command
 
     protected $description = 'Publish message to device';
 
-
     private string $topic;
 
     private string $message;
@@ -56,7 +55,7 @@ class PublishMessage extends Command
         try {
             $mqtt->publish($this->topic, $this->message);
             $mqtt->disconnect();
-        } catch (RepositoryException | DataTransferException $exception) {
+        } catch (RepositoryException|DataTransferException $exception) {
             Log::info($exception->getMessage());
         }
     }

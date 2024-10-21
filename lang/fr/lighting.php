@@ -9,13 +9,13 @@ return [
         'light/home/outside/back_patio/wall_light' => 'terrasse arrière - lumière murale',
         'light/garage/outside/side/wall_light' => 'passage piéton côté garage',
         'light/home/outside/back_patio/recessed_light' => 'terrasse arrière - encastrée',
-        'light/shed/outside/side/wall_light' => 'côté cabanon'
+        'light/shed/outside/side/wall_light' => 'côté cabanon',
     ],
     'message_label' => [
         'brightness' => 'luminosité: ',
         'energy' => 'énergie: ',
         'linkquality' => 'qualité du lien: ',
         'power' => 'puissance: ',
-        'state' => 'état: '
-    ]
+        'state' => 'état: ',
+    ],
 ];

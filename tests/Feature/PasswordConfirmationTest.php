@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Laravel\Jetstream\Features;
 
 test('confirm password screen can be rendered', function () {
@@ -17,7 +18,7 @@ test('password can be confirmed', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post('/user/confirm-password', [
-        'password' => 'password',
+        'password' => UserFactory::getUserPassword(),
     ]);
 
     $response->assertRedirect();

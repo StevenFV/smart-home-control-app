@@ -8,7 +8,6 @@ enum Zigbee2MqttUtility: string
 {
     use InvokableCases;
 
-
     case BASE_TOPIC = 'zigbee2mqtt/';
     case GET = '/get';
     case LIGHTING_TOPIC_FILTER = 'light';

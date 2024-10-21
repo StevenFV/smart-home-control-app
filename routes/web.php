@@ -24,19 +24,11 @@ Route::get('locale/{locale}', function (string $locale) {
     return Inertia::location(url()->previous());
 })->name('locale');
 
-//Route::get('/', function () {
-//    return Inertia::render('Welcome', [
-//        'canLogin' => Route::has('login'),
-//        'canRegister' => Route::has('register'),
-//        'laravelVersion' => Application::VERSION,
-//        'phpVersion' => PHP_VERSION,
-//    ]);
-//});
-
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
     }
+
     return Inertia::render('Auth/Login', [
         'canLogin' => Route::has('login'),
         'laravelVersion' => Application::VERSION,

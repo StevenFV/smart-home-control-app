@@ -1,13 +1,14 @@
 <?php
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Laravel\Jetstream\Features;
 
 test('user accounts can be deleted', function () {
     $this->actingAs($user = User::factory()->create());
 
     $this->delete('/user', [
-        'password' => 'password',
+        'password' => UserFactory::getUserPassword(),
     ]);
 
     expect($user->fresh())->toBeNull();
