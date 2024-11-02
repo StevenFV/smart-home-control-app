@@ -18,12 +18,12 @@ This guide will walk through the necessary steps to set up and configure the pro
 
 Before the beginning, the following prerequisites have to be installed on the system:
 
-- [Laravel](https://laravel.com/) - This project used the Laravel framework.
+- [Laravel 11.28.1](https://laravel.com/) - This project used the Laravel framework.
 - [Git](https://git-scm.com/) - Version control system.
-- [PHP](https://www.php.net/) - Main programming language.
-- [Node.js](https://nodejs.org/) - JavaScript runtime environment.
-- [Composer](https://getcomposer.org/) - PHP dependency manager.
-- [npm](https://www.npmjs.com/) - Node.js package manager.
+- [PHP 8.3.13](https://www.php.net/) - Main programming language.
+- [Node.js 21.7.3](https://nodejs.org/) - JavaScript runtime environment.
+- [Composer 2.7.7](https://getcomposer.org/) - PHP dependency manager.
+- [npm 10.5.0](https://www.npmjs.com/) - Node.js package manager.
 - Development environments can be used:
     - [Herd](https://herd.laravel.com/) - One click PHP development environment.
     - [Docker](https://www.docker.com/) - Containerization platform.
@@ -40,13 +40,18 @@ Before the beginning, the following prerequisites have to be installed on the sy
    Configure .env files base on these files with the specific environment settings,
    such as database credentials and other project-specific configurations.
 
-3. **Install Dependencies and Packages**:
+3. **Install Dependencies, Packages and run Project**:
 
     ```bash
     composer install
     ```
     ```bash
+    php artisan key:generate
+    php artisan migrate
+    ```
+    ```bash
     npm install
+    npm run dev
     ```
 
 ## Additional Information
