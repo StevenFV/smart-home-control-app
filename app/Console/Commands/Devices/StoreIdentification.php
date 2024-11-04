@@ -21,7 +21,7 @@ class StoreIdentification extends Command implements DeviceStoreInterface
 
     protected $signature = 'device:store-identification {deviceModelClassName}';
 
-    protected $description = 'Get device identifications from mqtt broker and put to home-control-app database';
+    protected $description = 'Get device identifications from mqtt broker and put to smart-home-control-app database';
 
     private string $message;
 

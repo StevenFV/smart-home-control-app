@@ -86,6 +86,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Localhost IP
+    |--------------------------------------------------------------------------
+    |
+    | The IP address commonly used for localhost. This constant can be
+    | utilized in various parts of the application wherever a reference
+    | to localhost is necessary, such as database configurations, API
+    | endpoint tests, or other localhost-specific functionality.
+    |
+    */
+
+    'localhost_ip' => '127.0.0.1',
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |
