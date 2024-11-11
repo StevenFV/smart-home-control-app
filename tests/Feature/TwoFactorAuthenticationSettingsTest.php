@@ -3,49 +3,55 @@
 use App\Models\User;
 use Laravel\Fortify\Features;
 
+const TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED = 'Two factor authentication is not enabled.';
+const USER_TWO_FACTOR_AUTHENTICATION = '/user/two-factor-authentication';
+const USER_TWO_FACTOR_RECOVERY_CODES = '/user/two-factor-recovery-codes';
+
 test('two factor authentication can be enabled', function () {
     $this->actingAs($user = User::factory()->create());
 
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
-    $this->post('/user/two-factor-authentication');
+    $this->post(USER_TWO_FACTOR_AUTHENTICATION);
 
-    expect($user->fresh()->two_factor_secret)->not->toBeNull();
-    expect($user->fresh()->recoveryCodes())->toHaveCount(8);
+    expect($user->fresh()->two_factor_secret)->not
+        ->toBeNull()
+        ->and($user->fresh()->recoveryCodes())->toHaveCount(8);
 })->skip(function () {
     return ! Features::canManageTwoFactorAuthentication();
-}, 'Two factor authentication is not enabled.');
+}, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);
 
 test('recovery codes can be regenerated', function () {
     $this->actingAs($user = User::factory()->create());
 
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
-    $this->post('/user/two-factor-authentication');
-    $this->post('/user/two-factor-recovery-codes');
+    $this->post(USER_TWO_FACTOR_AUTHENTICATION);
+    $this->post(USER_TWO_FACTOR_RECOVERY_CODES);
 
     $user = $user->fresh();
 
-    $this->post('/user/two-factor-recovery-codes');
+    $this->post(USER_TWO_FACTOR_RECOVERY_CODES);
 
-    expect($user->recoveryCodes())->toHaveCount(8);
-    expect(array_diff($user->recoveryCodes(), $user->fresh()->recoveryCodes()))->toHaveCount(8);
+    expect($user->recoveryCodes())
+        ->toHaveCount(8)
+        ->and(array_diff($user->recoveryCodes(), $user->fresh()->recoveryCodes()))->toHaveCount(8);
 })->skip(function () {
     return ! Features::canManageTwoFactorAuthentication();
-}, 'Two factor authentication is not enabled.');
+}, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);
 
 test('two factor authentication can be disabled', function () {
     $this->actingAs($user = User::factory()->create());
 
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
-    $this->post('/user/two-factor-authentication');
+    $this->post(USER_TWO_FACTOR_AUTHENTICATION);
 
     $this->assertNotNull($user->fresh()->two_factor_secret);
 
-    $this->delete('/user/two-factor-authentication');
+    $this->delete(USER_TWO_FACTOR_AUTHENTICATION);
 
     expect($user->fresh()->two_factor_secret)->toBeNull();
 })->skip(function () {
     return ! Features::canManageTwoFactorAuthentication();
-}, 'Two factor authentication is not enabled.');
+}, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);

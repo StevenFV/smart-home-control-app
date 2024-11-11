@@ -4,10 +4,12 @@ use App\Models\User;
 use Database\Factories\UserFactory;
 use Illuminate\Support\Facades\Hash;
 
+const USER_PASSWORD = '/user/password';
+
 test('password can be updated', function () {
     $this->actingAs($user = User::factory()->create());
 
-    $this->put('/user/password', [
+    $this->put(USER_PASSWORD, [
         'current_password' => UserFactory::getUserPassword(),
         'password' => 'new-password',
         'password_confirmation' => 'new-password',
@@ -19,7 +21,7 @@ test('password can be updated', function () {
 test('current password must be correct', function () {
     $this->actingAs($user = User::factory()->create());
 
-    $response = $this->put('/user/password', [
+    $response = $this->put(USER_PASSWORD, [
         'current_password' => 'wrong-password',
         'password' => UserFactory::getUserPassword(),
         'password_confirmation' => UserFactory::getUserPassword(),
@@ -33,7 +35,7 @@ test('current password must be correct', function () {
 test('new passwords must match', function () {
     $this->actingAs($user = User::factory()->create());
 
-    $response = $this->put('/user/password', [
+    $response = $this->put(USER_PASSWORD, [
         'current_password' => UserFactory::getUserPassword(),
         'password' => 'new-password',
         'password_confirmation' => 'wrong-password',
