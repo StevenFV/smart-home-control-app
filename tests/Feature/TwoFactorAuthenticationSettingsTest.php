@@ -3,9 +3,10 @@
 use App\Models\User;
 use Laravel\Fortify\Features;
 
-const USER_TWO_FACTOR_AUTHENTICATION = '/user/two-factor-authentication';
-
 const TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED = 'Two factor authentication is not enabled.';
+const USER_TWO_FACTOR_AUTHENTICATION = '/user/two-factor-authentication';
+const USER_TWO_FACTOR_RECOVERY_CODES = '/user/two-factor-recovery-codes';
+
 test('two factor authentication can be enabled', function () {
     $this->actingAs($user = User::factory()->create());
 
@@ -13,8 +14,9 @@ test('two factor authentication can be enabled', function () {
 
     $this->post(USER_TWO_FACTOR_AUTHENTICATION);
 
-    expect($user->fresh()->two_factor_secret)->not->toBeNull();
-    expect($user->fresh()->recoveryCodes())->toHaveCount(8);
+    expect($user->fresh()->two_factor_secret)->not
+        ->toBeNull()
+        ->and($user->fresh()->recoveryCodes())->toHaveCount(8);
 })->skip(function () {
     return ! Features::canManageTwoFactorAuthentication();
 }, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);
@@ -25,14 +27,15 @@ test('recovery codes can be regenerated', function () {
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
     $this->post(USER_TWO_FACTOR_AUTHENTICATION);
-    $this->post('/user/two-factor-recovery-codes');
+    $this->post(USER_TWO_FACTOR_RECOVERY_CODES);
 
     $user = $user->fresh();
 
-    $this->post('/user/two-factor-recovery-codes');
+    $this->post(USER_TWO_FACTOR_RECOVERY_CODES);
 
-    expect($user->recoveryCodes())->toHaveCount(8);
-    expect(array_diff($user->recoveryCodes(), $user->fresh()->recoveryCodes()))->toHaveCount(8);
+    expect($user->recoveryCodes())
+        ->toHaveCount(8)
+        ->and(array_diff($user->recoveryCodes(), $user->fresh()->recoveryCodes()))->toHaveCount(8);
 })->skip(function () {
     return ! Features::canManageTwoFactorAuthentication();
 }, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);

@@ -7,6 +7,7 @@ use Laravel\Fortify\Features;
 
 const FORGOT_PASSWORD = '/forgot-password';
 const PASSWORD_UPDATES_ARE_NOT_ENABLED = 'Password updates are not enabled.';
+
 test('reset password link screen can be rendered', function () {
     $response = $this->get(FORGOT_PASSWORD);
 

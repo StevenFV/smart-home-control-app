@@ -5,6 +5,7 @@ use Database\Factories\UserFactory;
 use Laravel\Jetstream\Features;
 
 const USER_CONFIRM_PASSWORD = '/user/confirm-password';
+
 test('confirm password screen can be rendered', function () {
     $user = Features::hasTeamFeatures()
                     ? User::factory()->withPersonalTeam()->create()

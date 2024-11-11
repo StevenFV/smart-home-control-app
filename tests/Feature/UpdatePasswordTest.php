@@ -5,6 +5,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Support\Facades\Hash;
 
 const USER_PASSWORD = '/user/password';
+
 test('password can be updated', function () {
     $this->actingAs($user = User::factory()->create());
 
