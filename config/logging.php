@@ -9,21 +9,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Paths
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log paths for your application. This provides
-    | a centralized location for managing log file paths, making it easier
-    | to update paths without altering multiple entries.
-    |
-    */
-
-    'paths' => [
-        'laravel_log' => 'logs/laravel.log',
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Default Log Channel
     |--------------------------------------------------------------------------
     |
@@ -75,14 +60,14 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path(config('logging.paths.laravel_log')),
+            'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path(config('logging.paths.laravel_log')),
+            'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,
@@ -139,7 +124,7 @@ return [
         ],
 
         'emergency' => [
-            'path' => storage_path(config('logging.paths.laravel_log')),
+            'path' => storage_path('logs/laravel.log'),
         ],
 
     ],

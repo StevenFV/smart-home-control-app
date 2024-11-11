@@ -1,7 +1,5 @@
 <?php
 
-const THE_SELECTED_ATTRIBUTE_IS_INVALID = 'The selected :attribute is invalid.';
-
 return [
 
     /*
@@ -51,8 +49,8 @@ return [
     'doesnt_start_with' => 'The :attribute field must not start with one of the following: :values.',
     'email' => 'The :attribute field must be a valid email address.',
     'ends_with' => 'The :attribute field must end with one of the following: :values.',
-    'enum' => THE_SELECTED_ATTRIBUTE_IS_INVALID,
-    'exists' => THE_SELECTED_ATTRIBUTE_IS_INVALID,
+    'enum' => 'The selected :attribute is invalid.',
+    'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute field must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
@@ -68,7 +66,7 @@ return [
         'string' => 'The :attribute field must be greater than or equal to :value characters.',
     ],
     'image' => 'The :attribute field must be an image.',
-    'in' => THE_SELECTED_ATTRIBUTE_IS_INVALID,
+    'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field must exist in :other.',
     'integer' => 'The :attribute field must be an integer.',
     'ip' => 'The :attribute field must be a valid IP address.',
@@ -111,7 +109,7 @@ return [
     'missing_with' => 'The :attribute field must be missing when :values is present.',
     'missing_with_all' => 'The :attribute field must be missing when :values are present.',
     'multiple_of' => 'The :attribute field must be a multiple of :value.',
-    'not_in' => THE_SELECTED_ATTRIBUTE_IS_INVALID,
+    'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute field format is invalid.',
     'numeric' => 'The :attribute field must be a number.',
     'password' => [
