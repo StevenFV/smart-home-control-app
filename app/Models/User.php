@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
@@ -59,6 +61,36 @@ class User extends Authenticatable
     private function getRole(): ?string
     {
         return $this->currentTeam->users()->where('users.id', $this->id)->first()->membership->role ?? null;
+    }
+
+    /**
+     * Get the URL to the user's profile photo.
+     *
+     * @override vendor/laravel/jetstream/src/HasProfilePhoto.php
+     */
+    public function profilePhotoUrl(): Attribute
+    {
+        return Attribute::get(function (): string {
+            return $this->profile_photo_path
+                ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
+                : $this->defaultProfilePhotoUrl();
+        });
+    }
+
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @override vendor/laravel/jetstream/src/HasProfilePhoto.php
+     */
+    protected function defaultProfilePhotoUrl(): string
+    {
+        $name = trim(
+            collect(explode(' ', $this->name))->map(function ($segment) {
+                return mb_substr($segment, 0, 1);
+            })->join(' '),
+        );
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&color=4ADE80&background=EBFFF0';
     }
 
     /**
