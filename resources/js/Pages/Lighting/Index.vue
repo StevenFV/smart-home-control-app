@@ -2,13 +2,11 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import axios from 'axios';
 import {computed, onMounted, onUnmounted, reactive, ref, watch} from 'vue';
-import {Head} from "@inertiajs/vue3";
 import ToggleSwitch from 'primevue/toggleswitch';
 import {trans} from "laravel-vue-i18n";
 import Zigbee2MqttUtility from "@/Enums/Devices/Zigbee2MqttUtility";
 
 
-const INDEX = 'lighting.index';
 const TOPIC_TITLE = 'lighting.topic_title';
 const MESSAGE_LABEL = 'lighting.message_label';
 
@@ -102,34 +100,36 @@ const toggleLight = async (newStates, changedKey) => {
 </script>
 
 <template>
-    <Head :title="displayText(INDEX)"/>
-
-    <AppLayout>
-        <template #header>
-            <div class="grid grid-cols-3 gap-6">
-                <div
-                    v-for="item in sortedLightingData"
-                    :key="item.friendlyName"
-                    class="bg-green-400 shadow-lg rounded-lg overflow-hidden m-6 p-6 col-3"
-                >
-                    <div class="text-center pt-2 font-semibold text-xl text-gray-800 leading-tight">
-                        {{ displayText(TOPIC_TITLE, item.friendlyName) }}
+    <AppLayout :title="trans('lighting.lighting')">
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="grid grid-cols-3 gap-6 p-6">
+                        <div
+                            v-for="item in sortedLightingData"
+                            :key="item.friendlyName"
+                            class="bg-green-400 shadow-lg rounded-lg overflow-hidden m-6 p-6 col-3"
+                        >
+                            <div class="text-center pt-1 pb-2 text-lg font-bold text-gray-800 leading-tight">
+                                {{ displayText(TOPIC_TITLE, item.friendlyName) }}
+                            </div>
+                            <div
+                                v-for="(value, label, indexValue) in item.data"
+                                :key="indexValue"
+                                class="p-1 font-bold text-gray-600"
+                            >
+                                <template v-if="label && value">
+                                    {{ displayText(MESSAGE_LABEL, label, value) }}
+                                </template>
+                            </div>
+                            <ToggleSwitch
+                                v-model="state[item.friendlyName]"
+                                class="ml-1"
+                            />
+                        </div>
                     </div>
-                    <div
-                        v-for="(value, label, indexValue) in item.data"
-                        :key="indexValue"
-                        class="p-1"
-                    >
-                        <template v-if="label && value">
-                            {{ displayText(MESSAGE_LABEL, label, value) }}
-                        </template>
-                    </div>
-                    <ToggleSwitch
-                        v-model="state[item.friendlyName]"
-                        class="ml-1"
-                    />
                 </div>
             </div>
-        </template>
+        </div>
     </AppLayout>
 </template>

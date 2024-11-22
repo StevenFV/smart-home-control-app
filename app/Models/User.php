@@ -62,6 +62,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @override vendor/laravel/jetstream/src/HasProfilePhoto.php
+     */
+    protected function defaultProfilePhotoUrl(): string
+    {
+        $name = trim(
+            collect(explode(' ', $this->name))->map(function ($segment) {
+                return mb_substr($segment, 0, 1);
+            })->join(' '),
+        );
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&color=4ADE80&background=EBFFF0';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

@@ -4,15 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Prevents a 404 error when the browser requests the favicon.ico. -->
-        <!--suppress HtmlUnknownTarget -->
-        <link rel="icon" type="image/x-icon" href="/favicon">
+        <!-- Favicon -->
+        <link rel="icon" href="{{ Vite::asset('resources/images/favicon.svg') }}" type="image/svg+xml" sizes="32x32">
 
         <!-- Scripts -->
         @routes
