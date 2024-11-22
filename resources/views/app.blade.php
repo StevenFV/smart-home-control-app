@@ -11,7 +11,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Favicon -->
-        <link rel="icon" href="{{ Vite::asset('resources/images/favicon.svg') }}" type="image/svg" sizes="32x32">
+        <link rel="icon" href="{{ Vite::asset('resources/images/favicon.svg') }}" type="image/svg+xml" sizes="32x32">
 
         <!-- Scripts -->
         @routes
