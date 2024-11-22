@@ -64,20 +64,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the URL to the user's profile photo.
-     *
-     * @override vendor/laravel/jetstream/src/HasProfilePhoto.php
-     */
-    public function profilePhotoUrl(): Attribute
-    {
-        return Attribute::get(function (): string {
-            return $this->profile_photo_path
-                ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
-                : $this->defaultProfilePhotoUrl();
-        });
-    }
-
-    /**
      * Get the default profile photo URL if no profile photo has been uploaded.
      *
      * @override vendor/laravel/jetstream/src/HasProfilePhoto.php
