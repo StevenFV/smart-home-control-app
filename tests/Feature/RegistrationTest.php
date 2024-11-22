@@ -20,7 +20,7 @@ test('registration screen cannot be rendered if support is disabled', function (
     return Features::enabled(Features::registration());
 }, 'Registration support is enabled.');
 
-test('new users can register', function () {
+test('new user with team invitation can register', function () {
     $user = User::factory()->withPersonalTeam()->create();
 
     $user->currentTeam->teamInvitations()->create([
@@ -41,3 +41,15 @@ test('new users can register', function () {
 })->skip(function () {
     return !Features::enabled(Features::registration());
 }, 'Registration support is not enabled.');
+
+test('new user without team invitation cannot register', function () {
+    $response = $this->post('/register', [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+        'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
+    ]);
+
+    expect($response->exception->getMessage())->toBe('The selected email is invalid.');
+});
