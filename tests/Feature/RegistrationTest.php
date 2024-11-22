@@ -52,4 +52,6 @@ test('new user without team invitation cannot register', function () {
     ]);
 
     expect($response->exception->getMessage())->toBe('The selected email is invalid.');
-});
+})->skip(function () {
+    return !Features::enabled(Features::registration());
+}, 'Registration support is not enabled.');
