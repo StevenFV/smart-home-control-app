@@ -2945,16 +2945,16 @@
         },
         {
             "name": "php-mqtt/client",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-mqtt/client.git",
-                "reference": "82581417df4fa63a95c7584866a8fd2fdef53105"
+                "reference": "8042ad93e72da8666e27168dc90670e45bdea274"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-mqtt/client/zipball/82581417df4fa63a95c7584866a8fd2fdef53105",
-                "reference": "82581417df4fa63a95c7584866a8fd2fdef53105",
+                "url": "https://api.github.com/repos/php-mqtt/client/zipball/8042ad93e72da8666e27168dc90670e45bdea274",
+                "reference": "8042ad93e72da8666e27168dc90670e45bdea274",
                 "shasum": ""
             },
             "require": {
@@ -2996,9 +2996,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-mqtt/client/issues",
-                "source": "https://github.com/php-mqtt/client/tree/v2.1.0"
+                "source": "https://github.com/php-mqtt/client/tree/v2.2.0"
             },
-            "time": "2024-04-24T16:24:36+00:00"
+            "time": "2024-11-24T20:54:32+00:00"
         },
         {
             "name": "php-mqtt/laravel-client",
