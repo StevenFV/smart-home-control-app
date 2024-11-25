@@ -30,7 +30,7 @@ class LightingController extends AbstractDataConstructor
 
     public function fetchDataForFrontend(): Collection
     {
-        Artisan::call('device:store-data', ['deviceModelClassName' => DeviceModelClassName::LIGHTING->value]);
+        Artisan::call('device:store-data', ['deviceModelClassName' => DeviceModelClassName::Lighting->value]);
 
         return $this->dataForFrontend();
     }

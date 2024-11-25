@@ -46,7 +46,7 @@ class StoreData extends Command implements DeviceStoreInterface
     {
         $friendlyNames = $model::distinct('friendly_name')->pluck('friendly_name')->toArray();
         $topicFilters = array_map(function ($friendlyName) {
-            return Zigbee2MqttUtility::BASE_TOPIC->value . $friendlyName;
+            return Zigbee2MqttUtility::BaseTopic->value . $friendlyName;
         }, $friendlyNames);
 
         return array_map([$this, 'fetchAndProcessMqttMessages'], $topicFilters);
@@ -66,7 +66,7 @@ class StoreData extends Command implements DeviceStoreInterface
             );
             $mqtt->publish(
                 $topicFilter . Zigbee2MqttUtility::GET->value,
-                Zigbee2MqttUtility::STATE_DEVICE_PAYLOAD->value,
+                Zigbee2MqttUtility::StateDevicePayload->value,
             );
             $mqtt->loop();
 

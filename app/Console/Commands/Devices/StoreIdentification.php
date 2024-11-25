@@ -48,7 +48,7 @@ class StoreIdentification extends Command implements DeviceStoreInterface
 
     public function data(Model $model): array
     {
-        $mqttMessages = $this->fetchAndProcessMqttMessages(Zigbee2MqttUtility::ZIGBEE2MQTT_BRIDGE_DEVICES->value);
+        $mqttMessages = $this->fetchAndProcessMqttMessages(Zigbee2MqttUtility::Zigbee2MQTTBridgeDevices->value);
 
         $parsedMqttMessages = json_decode($mqttMessages);
 

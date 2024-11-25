@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->callWith(StoreDevicesIdentificationSeeder::class, [
-            'deviceModelClassName' => DeviceModelClassName::LIGHTING->value,
+            'deviceModelClassName' => DeviceModelClassName::Lighting->value,
         ]);
     }
 }

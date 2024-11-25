@@ -35,7 +35,7 @@ class PublishMessage extends Command
 
     private function createTopic(DeviceRequest $request): string
     {
-        return Zigbee2MqttUtility::BASE_TOPIC->value . $request['friendlyName'] . $request['set'];
+        return Zigbee2MqttUtility::BaseTopic->value . $request['friendlyName'] . $request['set'];
     }
 
     private function createMessage(DeviceRequest $request): string

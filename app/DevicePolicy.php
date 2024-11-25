@@ -32,17 +32,17 @@ class DevicePolicy extends Controller
 
     private function isAdmin(User $user): bool
     {
-        return $user->can(PermissionRole::ADMIN->value);
+        return $user->can(PermissionRole::Admin->value);
     }
 
     private function canControlDevice(User $user): bool
     {
-        return $user->can(PermissionName::CONTROL_LIGHTING->value);
+        return $user->can(PermissionName::ControlLighting->value);
     }
 
     private function canViewDevice(User $user): bool
     {
-        return $user->can(PermissionName::VIEW_LIGHTING->value);
+        return $user->can(PermissionName::ViewLighting->value);
     }
 
     private function isIndex(Request $request): bool

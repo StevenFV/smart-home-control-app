@@ -86,7 +86,7 @@ class UserFactory extends Factory
             $team = $user->ownedTeams()->first();
 
             if ($team) {
-                $team->users()->attach($user->id, ['role' => PermissionRole::ADMIN]);
+                $team->users()->attach($user->id, ['role' => PermissionRole::Admin->value]);
             }
         });
     }

@@ -45,23 +45,23 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     protected function configurePermissions(): void
     {
-        Jetstream::defaultApiTokenPermissions([PermissionName::READ->value]);
+        Jetstream::defaultApiTokenPermissions([PermissionName::Read->value]);
 
-        Jetstream::role(PermissionRole::ADMIN->value, __('rolePermission.role.administrator'), [
-            PermissionName::CREATE->value,
-            PermissionName::READ->value,
-            PermissionName::UPDATE->value,
-            PermissionName::DELETE->value,
-            PermissionName::MANAGE_DEVICES->value,
-            PermissionName::MANAGE_USERS->value,
-            PermissionName::VIEW_LOGS->value,
+        Jetstream::role(PermissionRole::Admin->value, __('rolePermission.role.administrator'), [
+            PermissionName::Create->value,
+            PermissionName::Read->value,
+            PermissionName::Update->value,
+            PermissionName::Delete->value,
+            PermissionName::ManageDevices->value,
+            PermissionName::ManageUsers->value,
+            PermissionName::ViewLogs->value,
         ])->description(__('rolePermission.role.administrator_description'));
 
-        Jetstream::role(PermissionRole::USER->value, __('rolePermission.role.user'), [
-            PermissionName::READ->value,
-            PermissionName::CREATE->value,
-            PermissionName::UPDATE->value,
-            PermissionName::CONTROL_DEVICES->value,
+        Jetstream::role(PermissionRole::User->value, __('rolePermission.role.user'), [
+            PermissionName::Read->value,
+            PermissionName::Create->value,
+            PermissionName::Update->value,
+            PermissionName::ControlDevices->value,
         ])->description(__('rolePermission.role.user_description'));
     }
 }
