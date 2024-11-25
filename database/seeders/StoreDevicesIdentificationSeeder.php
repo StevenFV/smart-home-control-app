@@ -10,7 +10,7 @@ class StoreDevicesIdentificationSeeder extends Seeder
 {
     private string $deviceModelClassName;
 
-    public function __construct($deviceModelClassName = DeviceModelClassName::Lighting->value)
+    public function __construct($deviceModelClassName = DeviceModelClassName::Lighting->name)
     {
         $this->deviceModelClassName = $deviceModelClassName;
     }
