@@ -16,8 +16,8 @@ class LightingFactory extends Factory
     public function definition(): array
     {
         return [
-            'ieee_address' => $this->faker->macAddress,
-            'friendly_name' => $this->faker->word,
+            'ieee_address' => $this->faker->macAddress(),
+            'friendly_name' => $this->faker->word(),
             'brightness' => $this->faker->numberBetween(0, 100),
             'energy' => $this->faker->randomFloat(2, 0, 100),
             'linkquality' => $this->faker->numberBetween(0, 100),
