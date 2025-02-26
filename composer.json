@@ -9,11 +9,11 @@
         "ext-pdo": "*",
         "archtechx/enums": "^1.1",
         "inertiajs/inertia-laravel": "^2.0",
-        "laravel/framework": "^11.9",
+        "laravel/framework": "^12.0",
         "laravel/jetstream": "^5.1",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "php-mqtt/laravel-client": "^1.5",
+        "php-mqtt/laravel-client": "^1.6",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
