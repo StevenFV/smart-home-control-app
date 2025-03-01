@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Devices;
 
-use App\DevicePolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeviceRequest extends FormRequest
@@ -10,9 +9,6 @@ class DeviceRequest extends FormRequest
     public function __construct()
     {
         parent::__construct();
-
-        $devicePolicy = new DevicePolicy();
-        $devicePolicy->check();
     }
 
     public function rules(): array

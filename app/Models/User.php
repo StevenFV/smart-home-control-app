@@ -51,12 +51,26 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    /**
+     * Determine if the current user has the specified role.
+     */
     public function hasRole(string $role): bool
     {
         return $this->getRole() === $role;
     }
 
-    private function getRole(): ?string
+    /**
+     * Determine if the current user has any of the specified roles.
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return collect($roles)->contains(fn($role) => $this->hasRole($role));
+    }
+
+    /**
+     * Retrieve the role of the current user within the current team.
+     */
+    protected function getRole(): ?string
     {
         return $this->currentTeam->users()->where('users.id', $this->id)->first()->membership->role ?? null;
     }

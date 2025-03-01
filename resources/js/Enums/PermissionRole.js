@@ -5,5 +5,8 @@ export default Object.freeze({
      * have to be change too for consistance with Laravel.
     */
 
-    ADMIN: 'admin'
+    ADMIN: 'admin',
+    ADMIN_OR_USER: 'role:admin,user',
+    GUEST: 'guest',
+    USER: 'user',
 });

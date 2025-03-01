@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\PermissionRole;
+use App\Enums\Role;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -86,7 +86,7 @@ class UserFactory extends Factory
             $team = $user->ownedTeams()->first();
 
             if ($team) {
-                $team->users()->attach($user->id, ['role' => PermissionRole::Admin->value]);
+                $team->users()->attach($user->id, ['role' => Role::Admin->value]);
             }
         });
     }

@@ -9,8 +9,8 @@ use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
-use App\Enums\PermissionName;
-use App\Enums\PermissionRole;
+use App\Enums\Permission;
+use App\Enums\Role;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -45,23 +45,22 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     protected function configurePermissions(): void
     {
-        Jetstream::defaultApiTokenPermissions([PermissionName::Read->value]);
+        Jetstream::defaultApiTokenPermissions([
+            Permission::get->value,
+        ]);
 
-        Jetstream::role(PermissionRole::Admin->value, __('rolePermission.role.administrator'), [
-            PermissionName::Create->value,
-            PermissionName::Read->value,
-            PermissionName::Update->value,
-            PermissionName::Delete->value,
-            PermissionName::ManageDevices->value,
-            PermissionName::ManageUsers->value,
-            PermissionName::ViewLogs->value,
+        Jetstream::role(Role::Admin->value, __('rolePermission.role.administrator'), [
+            Permission::get->value,
+            Permission::set->value,
         ])->description(__('rolePermission.role.administrator_description'));
 
-        Jetstream::role(PermissionRole::User->value, __('rolePermission.role.user'), [
-            PermissionName::Read->value,
-            PermissionName::Create->value,
-            PermissionName::Update->value,
-            PermissionName::ControlDevices->value,
+        Jetstream::role(Role::User->value, __('rolePermission.role.user'), [
+            Permission::get->value,
+            Permission::set->value,
         ])->description(__('rolePermission.role.user_description'));
+
+        Jetstream::role(Role::Guest->value, __('rolePermission.role.guest'), [
+            Permission::get->value,
+        ])->description(__('rolePermission.role.guest_description'));
     }
 }
