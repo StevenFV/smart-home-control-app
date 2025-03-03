@@ -1,11 +1,14 @@
 <?php
 
+use App\Enums\Authenticate;
+use App\Enums\Role;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    if (auth()->check()) {
+    if (Authenticate::AuthSanctum->value && config(Authenticate::JetstreamAuthSession->value) &&
+        Authenticate::Verified->value && Role::AdminOrUserOrGuest->value) {
         return redirect()->route('dashboard');
     }
 
@@ -15,14 +18,21 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('locale/{locale}', function (string $locale) {
-    $locale === 'en' ? $locale = 'fr' : $locale = 'en';
-    Session::Put('locale', $locale);
+Route::middleware(
+    [
+        Authenticate::AuthSanctum->value,
+        config(Authenticate::JetstreamAuthSession->value),
+        Authenticate::Verified->value,
+        Role::AdminOrUserOrGuest->value,
+    ],
+)->group(function () {
+    Route::get('locale/{locale}', function (string $locale) {
+        $locale === 'en' ? $locale = 'fr' : $locale = 'en';
+        Session::Put('locale', $locale);
 
-    return Inertia::location(url()->previous());
-})->name('locale');
+        return Inertia::location(url()->previous());
+    })->name('locale');
 
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');

@@ -14,6 +14,10 @@ const props = defineProps({
     lightingData: {
         type: Object,
         default: null,
+    },
+    permissions: {
+        type: Object,
+        default: null,
     }
 })
 
@@ -110,7 +114,10 @@ const toggleLight = async (newStates, changedKey) => {
                             :key="item.friendlyName"
                             class="bg-green-400 shadow-lg rounded-lg overflow-hidden m-6 p-6 col-3"
                         >
-                            <div class="text-center pt-1 pb-2 text-lg font-bold text-gray-800 leading-tight">
+                            <div
+                                v-show="permissions.lighting.get"
+                                class="text-center pt-1 pb-2 text-lg font-bold text-gray-800 leading-tight"
+                            >
                                 {{ displayText(TOPIC_TITLE, item.friendlyName) }}
                             </div>
                             <div
@@ -118,11 +125,12 @@ const toggleLight = async (newStates, changedKey) => {
                                 :key="indexValue"
                                 class="p-1 font-bold text-gray-600"
                             >
-                                <template v-if="label && value">
+                                <template v-show="permissions.lighting.get" v-if="label && value">
                                     {{ displayText(MESSAGE_LABEL, label, value) }}
                                 </template>
                             </div>
                             <ToggleSwitch
+                                :disabled="!permissions.lighting.set"
                                 v-model="state[item.friendlyName]"
                                 class="ml-1"
                             />

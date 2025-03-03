@@ -10,7 +10,7 @@ enum Role: string
     */
 
     case Admin = 'admin';
-    case AdminOrUser = 'role:admin,user';
+    case AdminOrUserOrGuest = 'role:admin,user,guest';
     case Guest = 'guest';
     case User = 'user';
 }

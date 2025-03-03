@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Devices\Lighting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -37,6 +38,12 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'locale' => fn() => collect(config('app.locale')),
+            'permissions' => $request->user() ? [
+                'lighting' => [
+                    'get' => $request->user()->can('get', Lighting::class),
+                    'set' => $request->user()->can('set', Lighting::class),
+                ],
+            ] : null,
         ];
     }
 }
