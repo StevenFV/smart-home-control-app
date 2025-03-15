@@ -1,14 +1,14 @@
 <?php
 
 use App\Enums\Authenticate;
-use App\Enums\Role;
+use App\Enums\Web;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
     if (Authenticate::AuthSanctum->value && config(Authenticate::JetstreamAuthSession->value) &&
-        Authenticate::Verified->value && Role::AdminOrUserOrGuest->value) {
+        Authenticate::Verified->value && Web::AdminOrUserOrGuest->value) {
         return redirect()->route('dashboard');
     }
 
@@ -23,7 +23,7 @@ Route::middleware(
         Authenticate::AuthSanctum->value,
         config(Authenticate::JetstreamAuthSession->value),
         Authenticate::Verified->value,
-        Role::AdminOrUserOrGuest->value,
+        Web::AdminOrUserOrGuest->value,
     ],
 )->group(function () {
     Route::get('locale/{locale}', function (string $locale) {

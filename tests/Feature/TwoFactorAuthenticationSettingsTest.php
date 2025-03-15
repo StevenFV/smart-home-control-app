@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Laravel\Fortify\Features;
 
 const TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED = 'Two factor authentication is not enabled.';
@@ -8,7 +7,7 @@ const USER_TWO_FACTOR_AUTHENTICATION = '/user/two-factor-authentication';
 const USER_TWO_FACTOR_RECOVERY_CODES = '/user/two-factor-recovery-codes';
 
 test('two factor authentication can be enabled', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = createUserWithUserRole());
 
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
@@ -22,7 +21,7 @@ test('two factor authentication can be enabled', function () {
 }, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);
 
 test('recovery codes can be regenerated', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = createUserWithUserRole());
 
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
@@ -41,7 +40,7 @@ test('recovery codes can be regenerated', function () {
 }, TWO_FACTOR_AUTHENTICATION_IS_NOT_ENABLED);
 
 test('two factor authentication can be disabled', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = createUserWithUserRole());
 
     $this->withSession(['auth.password_confirmed_at' => time()]);
 

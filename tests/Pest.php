@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Role;
+use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /*
@@ -43,7 +48,34 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+const API_SUPPORT_IS_NOT_ENABLED = 'API support is not enabled.';
+const EMAIL_VERIFICATION_NOT_ENABLED = 'Email verification not enabled.';
+const PASSWORD_RESET = 'password-reset';
+const REGISTRATION_SUPPORT_IS_ENABLED = 'Registration support is enabled.';
+const REGISTRATION_SUPPORT_IS_NOT_ENABLED = 'Registration support is not enabled.';
+const TEAM_INVITATIONS_NOT_ENABLED = 'Team invitations not enabled.';
+const TEST_PASSWORD = 'test-password';
+const TEAM_SUPPORT_IS_NOT_ENABLED = 'Team support is not enabled.';
+const WRONG_EMAIL = 'wrong-email';
+const WRONG_PASSWORD = 'wrong-password';
+
+function createUserWithUserRole(): User
 {
-    // ..
+    $roleSeeder = new RoleSeeder();
+    $roleSeeder->run();
+
+    $adminRole = Role::where('identifier', 'admin')->first();
+
+    $user = new User();
+    $user->name = 'Test User';
+    $user->email = 'test@email.com';
+    $user->email_verified_at = now();
+    $user->password = Hash::make(TEST_PASSWORD);
+    $user->two_factor_secret = null;
+    $user->two_factor_recovery_codes = null;
+    $user->remember_token = Str::random(10);
+    $user->role_id = $adminRole?->id;
+    $user->save();
+
+    return $user;
 }

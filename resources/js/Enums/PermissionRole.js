@@ -6,7 +6,6 @@ export default Object.freeze({
     */
 
     ADMIN: 'admin',
-    ADMIN_OR_USER: 'role:admin,user',
     GUEST: 'guest',
     USER: 'user',
 });

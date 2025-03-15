@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\User;
-
 test('profile information can be updated', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = createUserWithUserRole());
 
     $this->put('/user/profile-information', [
         'name' => 'Test Name',

@@ -2,12 +2,13 @@
 
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Laravel\Jetstream\Features;
 
 test('team member roles can be updated', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
     $user->currentTeam->users()->attach(
-        $otherUser = User::factory()->create(),
+        $otherUser = createUserWithUserRole(),
         ['role' => 'admin'],
     );
 
@@ -19,7 +20,9 @@ test('team member roles can be updated', function () {
         $user->currentTeam->fresh(),
         'user',
     ))->toBeTrue();
-});
+})->skip(function () {
+    return !Features::hasTeamFeatures();
+}, TEAM_SUPPORT_IS_NOT_ENABLED);
 
 test('only team owner can update team member roles', function () {
     $authorizationException = new AuthorizationException();
@@ -27,7 +30,7 @@ test('only team owner can update team member roles', function () {
     $user = User::factory()->withPersonalTeam()->create();
 
     $user->currentTeam->users()->attach(
-        $otherUser = User::factory()->create(),
+        $otherUser = createUserWithUserRole(),
         ['role' => 'admin'],
     );
 
@@ -43,4 +46,6 @@ test('only team owner can update team member roles', function () {
         $user->currentTeam->fresh(),
         'admin',
     ))->and($isActionUnauthorizedMessage)->toBeTrue();
-});
+})->skip(function () {
+    return !Features::hasTeamFeatures();
+}, TEAM_SUPPORT_IS_NOT_ENABLED);
