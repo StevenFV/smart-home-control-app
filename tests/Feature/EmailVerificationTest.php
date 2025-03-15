@@ -1,17 +1,14 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
 
-const EMAIL_VERIFICATION_NOT_ENABLED = 'Email verification not enabled.';
-
 test('email verification screen can be rendered', function () {
-    $user = User::factory()->withPersonalTeam()->create([
-        'email_verified_at' => null,
-    ]);
+    $user = createUserWithUserRole();
+    $user->email_verified_at = null;
+    $user->save();
 
     $response = $this->actingAs($user)->get('/email/verify');
 
@@ -23,9 +20,9 @@ test('email verification screen can be rendered', function () {
 test('email can be verified', function () {
     Event::fake();
 
-    $user = User::factory()->create([
-        'email_verified_at' => null,
-    ]);
+    $user = createUserWithUserRole();
+    $user->email_verified_at = null;
+    $user->save();
 
     $verificationUrl = URL::temporarySignedRoute(
         'verification.verify',
@@ -44,14 +41,14 @@ test('email can be verified', function () {
 }, EMAIL_VERIFICATION_NOT_ENABLED);
 
 test('email can not verified with invalid hash', function () {
-    $user = User::factory()->create([
-        'email_verified_at' => null,
-    ]);
+    $user = createUserWithUserRole();
+    $user->email_verified_at = null;
+    $user->save();
 
     $verificationUrl = URL::temporarySignedRoute(
         'verification.verify',
         now()->addMinutes(60),
-        ['id' => $user->id, 'hash' => sha1('wrong-email')],
+        ['id' => $user->id, 'hash' => sha1(WRONG_EMAIL)],
     );
 
     $this->actingAs($user)->get($verificationUrl);

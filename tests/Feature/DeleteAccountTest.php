@@ -1,14 +1,12 @@
 <?php
 
-use App\Models\User;
-use Database\Factories\UserFactory;
 use Laravel\Jetstream\Features;
 
 test('user accounts can be deleted', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = createUserWithUserRole());
 
     $this->delete('/user', [
-        'password' => UserFactory::getUserPassword(),
+        'password' => TEST_PASSWORD,
     ]);
 
     expect($user->fresh())->toBeNull();
@@ -17,10 +15,10 @@ test('user accounts can be deleted', function () {
 }, 'Account deletion is not enabled.');
 
 test('correct password must be provided before account can be deleted', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = createUserWithUserRole());
 
     $this->delete('/user', [
-        'password' => 'wrong-password',
+        'password' => WRONG_PASSWORD,
     ]);
 
     expect($user->fresh())->not->toBeNull();

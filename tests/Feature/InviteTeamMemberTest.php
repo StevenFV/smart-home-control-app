@@ -20,7 +20,7 @@ test('team members can be invited to team', function () {
     expect($user->currentTeam->fresh()->teamInvitations)->toHaveCount(1);
 })->skip(function () {
     return ! Features::sendsTeamInvitations();
-}, 'Team invitations not enabled.');
+}, TEAM_INVITATIONS_NOT_ENABLED);
 
 test('team member invitations can be cancelled', function () {
     Mail::fake();
@@ -37,4 +37,4 @@ test('team member invitations can be cancelled', function () {
     expect($user->currentTeam->fresh()->teamInvitations)->toHaveCount(0);
 })->skip(function () {
     return ! Features::sendsTeamInvitations();
-}, 'Team invitations not enabled.');
+}, TEAM_INVITATIONS_NOT_ENABLED);

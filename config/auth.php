@@ -20,17 +20,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication User For Development
+    | Application Admin Authentication
     |--------------------------------------------------------------------------
     |
-    | This option defines the user authentication credentials for development.
+    | The options define the authentication credentials for the application
+    | admin.
+    | These values are typically stored in the environment file for security
+    | purposes.
     |
     */
-    'dev' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'name' => env('AUTH_NAME', 'User Name'),
-        'email' => env('AUTH_EMAIL', 'dev@email.com'),
-        'passwords' => env('AUTH_PASSWORD', 'passwords'),
+    'admin' => [
+        'name' => env('AUTH_ADMIN_NAME'),
+        'email' => env('AUTH_ADMIN_EMAIL'),
+        'passwords' => env('AUTH_ADMIN_PASSWORD'),
     ],
 
     /*

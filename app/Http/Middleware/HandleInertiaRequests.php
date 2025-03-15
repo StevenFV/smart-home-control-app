@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\Permission as PermissionEnums;
 use App\Models\Devices\Lighting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -40,8 +41,8 @@ class HandleInertiaRequests extends Middleware
             'locale' => fn() => collect(config('app.locale')),
             'permissions' => $request->user() ? [
                 'lighting' => [
-                    'get' => $request->user()->can('get', Lighting::class),
-                    'set' => $request->user()->can('set', Lighting::class),
+                    PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Lighting::class),
+                    PermissionEnums::ControlDevices->value => $request->user()->can(PermissionEnums::ControlDevices->value, Lighting::class),
                 ],
             ] : null,
         ];

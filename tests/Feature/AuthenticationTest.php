@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\User;
-use Database\Factories\UserFactory;
-
 const LOGIN = '/login';
 
 test('login screen can be rendered', function () {
@@ -12,11 +9,11 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    $user = createUserWithUserRole();
 
     $response = $this->post(LOGIN, [
         'email' => $user->email,
-        'password' => UserFactory::getUserPassword(),
+        'password' => TEST_PASSWORD,
     ]);
 
     $this->assertAuthenticated();
@@ -24,11 +21,11 @@ test('users can authenticate using the login screen', function () {
 });
 
 test('users cannot authenticate with invalid password', function () {
-    $user = User::factory()->create();
+    $user = createUserWithUserRole();
 
     $this->post(LOGIN, [
         'email' => $user->email,
-        'password' => 'wrong-password',
+        'password' => WRONG_PASSWORD,
     ]);
 
     $this->assertGuest();

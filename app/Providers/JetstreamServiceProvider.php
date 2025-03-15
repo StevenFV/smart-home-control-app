@@ -9,8 +9,6 @@ use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
-use App\Enums\Permission;
-use App\Enums\Role;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -45,22 +43,17 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     protected function configurePermissions(): void
     {
-        Jetstream::defaultApiTokenPermissions([
-            Permission::get->value,
-        ]);
+        Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::role(Role::Admin->value, __('rolePermission.role.administrator'), [
-            Permission::get->value,
-            Permission::set->value,
-        ])->description(__('rolePermission.role.administrator_description'));
+        Jetstream::role('admin', 'Administrator', [
+            'server:create',
+            'server:read',
+            'server:update',
+            'server:delete',
+        ])->description('Administrator users can perform any action.');
 
-        Jetstream::role(Role::User->value, __('rolePermission.role.user'), [
-            Permission::get->value,
-            Permission::set->value,
-        ])->description(__('rolePermission.role.user_description'));
-
-        Jetstream::role(Role::Guest->value, __('rolePermission.role.guest'), [
-            Permission::get->value,
-        ])->description(__('rolePermission.role.guest_description'));
+        Jetstream::role('support', 'Support Specialist', [
+            'server:read',
+        ])->description('Support specialists can read server information.');
     }
 }

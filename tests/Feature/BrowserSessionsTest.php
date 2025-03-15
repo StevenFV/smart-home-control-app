@@ -1,13 +1,10 @@
 <?php
 
-use App\Models\User;
-use Database\Factories\UserFactory;
-
 test('other browser sessions can be logged out', function () {
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(createUserWithUserRole());
 
     $response = $this->delete('/user/other-browser-sessions', [
-        'password' => UserFactory::getUserPassword(),
+        'password' => TEST_PASSWORD,
     ]);
 
     $response->assertSessionHasNoErrors();
