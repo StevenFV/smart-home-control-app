@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Enums\Permission as PermissionEnums;
-use App\Models\Devices\Lighting;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -41,8 +41,8 @@ class HandleInertiaRequests extends Middleware
             'locale' => fn() => collect(config('app.locale')),
             'permissions' => $request->user() ? [
                 'lighting' => [
-                    PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Lighting::class),
-                    PermissionEnums::ControlDevices->value => $request->user()->can(PermissionEnums::ControlDevices->value, Lighting::class),
+                    PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Permission::class),
+                    PermissionEnums::ControlDevices->value => $request->user()->can(PermissionEnums::ControlDevices->value, Permission::class),
                 ],
             ] : null,
         ];

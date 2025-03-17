@@ -115,7 +115,7 @@ const toggleLight = async (newStates, changedKey) => {
                             class="bg-green-400 shadow-lg rounded-lg overflow-hidden m-6 p-6 col-3"
                         >
                             <div
-                                v-show="permissions.lighting.get"
+                                v-show="permissions.lighting.viewDevices"
                                 class="text-center pt-1 pb-2 text-lg font-bold text-gray-800 leading-tight"
                             >
                                 {{ displayText(TOPIC_TITLE, item.friendlyName) }}
@@ -125,12 +125,12 @@ const toggleLight = async (newStates, changedKey) => {
                                 :key="indexValue"
                                 class="p-1 font-bold text-gray-600"
                             >
-                                <template v-show="permissions.lighting.get" v-if="label && value">
+                                <template v-show="permissions.lighting.viewDevices" v-if="label && value">
                                     {{ displayText(MESSAGE_LABEL, label, value) }}
                                 </template>
                             </div>
                             <ToggleSwitch
-                                :disabled="!permissions.lighting.set"
+                                :disabled="!permissions.lighting.controlDevices"
                                 v-model="state[item.friendlyName]"
                                 class="ml-1"
                             />
