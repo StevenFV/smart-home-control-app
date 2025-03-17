@@ -34,6 +34,16 @@ return [
         'email' => env('AUTH_ADMIN_EMAIL'),
         'passwords' => env('AUTH_ADMIN_PASSWORD'),
     ],
+    'user' => [
+        'name' => env('AUTH_USER_NAME'),
+        'email' => env('AUTH_USER_EMAIL'),
+        'passwords' => env('AUTH_USER_PASSWORD'),
+    ],
+    'guest' => [
+        'name' => env('AUTH_GUEST_NAME'),
+        'email' => env('AUTH_GUEST_EMAIL'),
+        'passwords' => env('AUTH_GUEST_PASSWORD'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

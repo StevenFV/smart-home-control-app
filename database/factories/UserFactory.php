@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,25 +15,39 @@ use Laravel\Jetstream\Features;
 class UserFactory extends Factory
 {
     /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
+
+    /**
+     * The current name being used by the factory.
+     */
+    protected static ?string $name;
+
+    /**
+     * The current email being used by the factory.
+     */
+    protected static ?string $email;
+
+    /**
+     * The current role being used by the factory.
+     */
+    protected static ?int $roleId;
+
+    /**
      * Define the model's default state.
      */
     public function definition(): array
     {
-        if (User::where('email', config('auth.admin.email'))->exists()) {
-            return [];
-        }
-
-        $adminRole = Role::where('identifier', 'admin')->first();
-
         return [
-            'name' => config('auth.admin.name'),
-            'email' => config('auth.admin.email'),
+            'name' => static::$name ??= fake()->name(),
+            'email' => static::$email ??= fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make(config('auth.admin.passwords')),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
-            'remember_token' => Str::random(10),
-            'role_id' => $adminRole?->id,
+            'role_id' => static::$roleId ??= fake()->unique()->numberBetween(1, 3),
             // 'profile_photo_path' => null,
             // 'current_team_id' => null,
         ];
