@@ -3,12 +3,13 @@
 use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use Tests\Enums\TestMessage;
 
 test('api token permissions can be updated', function () {
     if (Features::hasTeamFeatures()) {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     } else {
-        $this->actingAs($user = createUserWithUserRole());
+        $this->actingAs($user = $this->createUserWithUserRole());
     }
 
     $token = $user->tokens()->create([
@@ -31,4 +32,4 @@ test('api token permissions can be updated', function () {
         ->can('missing-permission')->toBeFalse();
 })->skip(function () {
     return ! Features::hasApiFeatures();
-}, API_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::API_SUPPORT_IS_NOT_ENABLED->value);

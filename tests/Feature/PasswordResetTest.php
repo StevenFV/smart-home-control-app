@@ -3,6 +3,7 @@
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Features;
+use Tests\Enums\TestMessage;
 
 const FORGOT_PASSWORD = '/forgot-password';
 const PASSWORD_UPDATES_ARE_NOT_ENABLED = 'Password updates are not enabled.';
@@ -18,7 +19,7 @@ test('reset password link screen can be rendered', function () {
 test('reset password link can be requested', function () {
     Notification::fake();
 
-    $user = createUserWithUserRole();
+    $user = $this->createUserWithUserRole();
 
     $this->post(FORGOT_PASSWORD, [
         'email' => $user->email,
@@ -32,7 +33,7 @@ test('reset password link can be requested', function () {
 test('reset password screen can be rendered', function () {
     Notification::fake();
 
-    $user = createUserWithUserRole();
+    $user = $this->createUserWithUserRole();
 
     $this->post(FORGOT_PASSWORD, [
         'email' => $user->email,
@@ -52,7 +53,7 @@ test('reset password screen can be rendered', function () {
 test('password can be reset with valid token', function () {
     Notification::fake();
 
-    $user = createUserWithUserRole();
+    $user = $this->createUserWithUserRole();
 
     $this->post(FORGOT_PASSWORD, [
         'email' => $user->email,
@@ -62,8 +63,8 @@ test('password can be reset with valid token', function () {
         $response = $this->post('/reset-password', [
             'token' => $notification->token,
             'email' => $user->email,
-            'password' => PASSWORD_RESET,
-            'password_confirmation' => PASSWORD_RESET,
+            'password' => TestMessage::PASSWORD_RESET->value,
+            'password_confirmation' => TestMessage::PASSWORD_RESET->value,
         ]);
 
         $response->assertSessionHasNoErrors();

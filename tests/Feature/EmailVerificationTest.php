@@ -4,9 +4,10 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
+use Tests\Enums\TestMessage;
 
 test('email verification screen can be rendered', function () {
-    $user = createUserWithUserRole();
+    $user = $this->createUserWithUserRole();
     $user->email_verified_at = null;
     $user->save();
 
@@ -15,12 +16,12 @@ test('email verification screen can be rendered', function () {
     $response->assertStatus(200);
 })->skip(function () {
     return ! Features::enabled(Features::emailVerification());
-}, EMAIL_VERIFICATION_NOT_ENABLED);
+}, TestMessage::EMAIL_VERIFICATION_NOT_ENABLED->value);
 
 test('email can be verified', function () {
     Event::fake();
 
-    $user = createUserWithUserRole();
+    $user = $this->createUserWithUserRole();
     $user->email_verified_at = null;
     $user->save();
 
@@ -38,17 +39,17 @@ test('email can be verified', function () {
     $response->assertRedirect(route('dashboard', absolute: false) . '?verified=1');
 })->skip(function () {
     return ! Features::enabled(Features::emailVerification());
-}, EMAIL_VERIFICATION_NOT_ENABLED);
+}, TestMessage::EMAIL_VERIFICATION_NOT_ENABLED->value);
 
 test('email can not verified with invalid hash', function () {
-    $user = createUserWithUserRole();
+    $user = $this->createUserWithUserRole();
     $user->email_verified_at = null;
     $user->save();
 
     $verificationUrl = URL::temporarySignedRoute(
         'verification.verify',
         now()->addMinutes(60),
-        ['id' => $user->id, 'hash' => sha1(WRONG_EMAIL)],
+        ['id' => $user->id, 'hash' => sha1(TestMessage::WRONG_EMAIL->value)],
     );
 
     $this->actingAs($user)->get($verificationUrl);
@@ -56,4 +57,4 @@ test('email can not verified with invalid hash', function () {
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 })->skip(function () {
     return ! Features::enabled(Features::emailVerification());
-}, EMAIL_VERIFICATION_NOT_ENABLED);
+}, TestMessage::EMAIL_VERIFICATION_NOT_ENABLED->value);

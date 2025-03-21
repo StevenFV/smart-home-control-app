@@ -2,12 +2,13 @@
 
 use App\Models\User;
 use Laravel\Jetstream\Features;
+use Tests\Enums\TestMessage;
 
 test('users can leave teams', function () {
     $user = User::factory()->withPersonalTeam()->create();
 
     $user->currentTeam->users()->attach(
-        $otherUser = createUserWithUserRole(),
+        $otherUser = $this->createUserWithUserRole(),
         ['role' => 'admin'],
     );
 
@@ -18,7 +19,7 @@ test('users can leave teams', function () {
     expect($user->currentTeam->fresh()->users)->toHaveCount(0);
 })->skip(function () {
     return !Features::hasTeamFeatures();
-}, TEAM_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('team owners cant leave their own team', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
@@ -30,4 +31,4 @@ test('team owners cant leave their own team', function () {
     expect($user->currentTeam->fresh())->not->toBeNull();
 })->skip(function () {
     return !Features::hasTeamFeatures();
-}, TEAM_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);

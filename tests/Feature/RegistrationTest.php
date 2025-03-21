@@ -4,6 +4,7 @@ use App\Models\User;
 use Laravel\Fortify\Features as FortifyFeatures;
 use Laravel\Jetstream\Features as JetstreamFeatures;
 use Laravel\Jetstream\Jetstream;
+use Tests\Enums\TestMessage;
 
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
@@ -19,7 +20,7 @@ test('registration screen cannot be rendered if support is disabled', function (
     $response->assertStatus(404);
 })->skip(function () {
     return FortifyFeatures::enabled(FortifyFeatures::registration());
-}, REGISTRATION_SUPPORT_IS_ENABLED);
+}, TestMessage::REGISTRATION_SUPPORT_IS_ENABLED->value);
 
 test('new user with team invitation can register', function () {
     $user = User::factory()->withPersonalTeam()->create();
@@ -43,7 +44,7 @@ test('new user with team invitation can register', function () {
     return !FortifyFeatures::enabled(FortifyFeatures::registration());
 }, 'Registration support is not enabled.')->skip(function () {
     return !JetstreamFeatures::hasTeamFeatures();
-}, TEAM_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('new user without team invitation cannot register', function () {
     $response = $this->post('/register', [
@@ -57,6 +58,6 @@ test('new user without team invitation cannot register', function () {
     expect($response->exception->getMessage())->toBe('The selected email is invalid.');
 })->skip(function () {
     return !FortifyFeatures::enabled(FortifyFeatures::registration());
-}, REGISTRATION_SUPPORT_IS_NOT_ENABLED)->skip(function () {
+}, TestMessage::REGISTRATION_SUPPORT_IS_NOT_ENABLED->value)->skip(function () {
     return !JetstreamFeatures::hasTeamFeatures();
-}, TEAM_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);

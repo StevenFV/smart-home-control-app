@@ -3,12 +3,13 @@
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Laravel\Jetstream\Features;
+use Tests\Enums\TestMessage;
 
 test('team member roles can be updated', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
     $user->currentTeam->users()->attach(
-        $otherUser = createUserWithUserRole(),
+        $otherUser = $this->createUserWithUserRole(),
         ['role' => 'admin'],
     );
 
@@ -22,7 +23,7 @@ test('team member roles can be updated', function () {
     ))->toBeTrue();
 })->skip(function () {
     return !Features::hasTeamFeatures();
-}, TEAM_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('only team owner can update team member roles', function () {
     $authorizationException = new AuthorizationException();
@@ -30,7 +31,7 @@ test('only team owner can update team member roles', function () {
     $user = User::factory()->withPersonalTeam()->create();
 
     $user->currentTeam->users()->attach(
-        $otherUser = createUserWithUserRole(),
+        $otherUser = $this->createUserWithUserRole(),
         ['role' => 'admin'],
     );
 
@@ -48,4 +49,4 @@ test('only team owner can update team member roles', function () {
     ))->and($isActionUnauthorizedMessage)->toBeTrue();
 })->skip(function () {
     return !Features::hasTeamFeatures();
-}, TEAM_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);

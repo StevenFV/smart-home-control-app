@@ -5,7 +5,7 @@ use App\Models\Devices\Lighting;
 it('returns correct lighting data', function () {
     $lighting = Lighting::factory()->create();
 
-    expect($lighting->ieee_address)->toBeString()
+    expect($lighting->ieee_address)->toBeValidIeeeAddress()
         ->and($lighting->friendly_name)->toBeString()
         ->and($lighting->brightness)->toBeInt()
         ->and($lighting->energy)->toBeFloat()

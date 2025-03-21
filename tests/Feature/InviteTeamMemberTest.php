@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Mail\TeamInvitation;
+use Tests\Enums\TestMessage;
 
 test('team members can be invited to team', function () {
     Mail::fake();
@@ -20,7 +21,7 @@ test('team members can be invited to team', function () {
     expect($user->currentTeam->fresh()->teamInvitations)->toHaveCount(1);
 })->skip(function () {
     return ! Features::sendsTeamInvitations();
-}, TEAM_INVITATIONS_NOT_ENABLED);
+}, TestMessage::TEAM_INVITATIONS_NOT_ENABLED->value);
 
 test('team member invitations can be cancelled', function () {
     Mail::fake();
@@ -37,4 +38,4 @@ test('team member invitations can be cancelled', function () {
     expect($user->currentTeam->fresh()->teamInvitations)->toHaveCount(0);
 })->skip(function () {
     return ! Features::sendsTeamInvitations();
-}, TEAM_INVITATIONS_NOT_ENABLED);
+}, TestMessage::TEAM_INVITATIONS_NOT_ENABLED->value);

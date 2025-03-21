@@ -2,12 +2,13 @@
 
 use App\Models\User;
 use Laravel\Jetstream\Features;
+use Tests\Enums\TestMessage;
 
 test('api tokens can be created', function () {
     if (Features::hasTeamFeatures()) {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     } else {
-        $this->actingAs($user = createUserWithUserRole());
+        $this->actingAs($user = $this->createUserWithUserRole());
     }
 
     $this->post('/user/api-tokens', [
@@ -27,4 +28,4 @@ test('api tokens can be created', function () {
         ->can('delete')->toBeFalse();
 })->skip(function () {
     return ! Features::hasApiFeatures();
-}, API_SUPPORT_IS_NOT_ENABLED);
+}, TestMessage::API_SUPPORT_IS_NOT_ENABLED->value);

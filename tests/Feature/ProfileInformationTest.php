@@ -1,7 +1,7 @@
 <?php
 
 test('profile information can be updated', function () {
-    $this->actingAs($user = createUserWithUserRole());
+    $this->actingAs($user = $this->createUserWithUserRole());
 
     $this->put('/user/profile-information', [
         'name' => 'Test Name',
