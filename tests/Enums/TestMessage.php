@@ -12,7 +12,8 @@ enum TestMessage: string
     case TEAM_INVITATIONS_NOT_ENABLED = 'Team invitations not enabled.';
     case TEST_PASSWORD = 'test-password';
     case TEAM_SUPPORT_IS_NOT_ENABLED = 'Team support is not enabled.';
-    case TO_BE_VALID_IEEE_ADDRESS = 'Expected "%s" to be a valid IEEE address in format "0x1234567812345678"';
+    case TO_BE_VALID_IEEE_ADDRESS = 'Expected "%s" to be a valid IEEE address format';
+    case TO_BE_VALID_FRIENDLY_NAME = 'Expected "%s" to be a valid friendly name format';
     case WRONG_EMAIL = 'wrong-email';
     case WRONG_PASSWORD = 'wrong-password';
 }

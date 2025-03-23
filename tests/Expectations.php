@@ -12,3 +12,14 @@ expect()->extend('toBeValidIeeeAddress', function () {
 
     return $this;
 });
+
+expect()->extend('toBeValidfriendlyName', function () {
+    expect($this->value)->toBeString();
+
+    $friendlyNamePattern = '/^[a-z0-9]+\/[a-z0-9]+\/[a-z0-9]+\/[a-z0-9]+(_[a-z0-9]+)?\/[a-z0-9]+(_[a-z0-9]+)?$/';
+    $isValidFormat = preg_match($friendlyNamePattern, $this->value) === 1;
+
+    expect($isValidFormat)->toBeTrue(sprintf(TestMessage::TO_BE_VALID_FRIENDLY_NAME->value, $this->value));
+
+    return $this;
+});
