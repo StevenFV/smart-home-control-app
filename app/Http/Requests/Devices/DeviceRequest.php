@@ -6,11 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DeviceRequest extends FormRequest
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function rules(): array
     {
         $startWithCapitalLetter = 'regex:/^[A-Z]/';
