@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Devices;
 
-use App\Enums\Zigbee2MqttUtility;
+use App\Enums\Zigbee2MQTT;
 use App\Interfaces\Devices\DeviceStoreInterface;
 use App\Traits\Devices\DeviceModelNamespaceResolverTrait;
 use Illuminate\Console\Command;
@@ -48,7 +48,7 @@ class StoreIdentification extends Command implements DeviceStoreInterface
 
     public function data(Model $model): array
     {
-        $mqttMessages = $this->fetchAndProcessMqttMessages(Zigbee2MqttUtility::Zigbee2MQTTBridgeDevices->value);
+        $mqttMessages = $this->fetchAndProcessMqttMessages(Zigbee2MQTT::BridgeDevices->value);
 
         $parsedMqttMessages = json_decode($mqttMessages);
 

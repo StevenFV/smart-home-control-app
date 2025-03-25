@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Devices;
 
-use App\Enums\Zigbee2MqttUtility;
+use App\Enums\Zigbee2MQTT;
 use App\Http\Requests\Devices\DeviceRequest;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -35,7 +35,7 @@ class PublishMessage extends Command
 
     private function createTopic(DeviceRequest $request): string
     {
-        return Zigbee2MqttUtility::BaseTopic->value . $request['friendlyName'] . $request['set'];
+        return Zigbee2MQTT::BaseTopic->value . $request['friendlyName'] . $request['set'];
     }
 
     private function createMessage(DeviceRequest $request): string
