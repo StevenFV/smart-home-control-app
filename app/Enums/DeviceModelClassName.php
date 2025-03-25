@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum DeviceModelClassName
+enum DeviceModelClassName: string
 {
-    case Lighting;
+    case Lighting = 'Lighting';
 }
