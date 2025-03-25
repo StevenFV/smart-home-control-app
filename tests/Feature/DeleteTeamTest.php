@@ -1,9 +1,10 @@
 <?php
 
+use App\Enums\Role;
 use App\Models\Team;
 use App\Models\User;
 use Laravel\Jetstream\Features;
-use Tests\Enums\TestMessage;
+use Tests\Enums\Message;
 
 test('teams can be deleted', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
@@ -13,7 +14,7 @@ test('teams can be deleted', function () {
     ]));
 
     $team->users()->attach(
-        $otherUser = $this->createUserWithUserRole(),
+        $otherUser = $this->createUser(Role::User),
         ['role' => 'test-role'],
     );
 
@@ -23,7 +24,7 @@ test('teams can be deleted', function () {
     expect($otherUser->fresh()->teams)->toHaveCount(0);
 })->skip(function () {
     return !Features::hasTeamFeatures();
-}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);
+}, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('personal teams cant be deleted', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
@@ -33,4 +34,4 @@ test('personal teams cant be deleted', function () {
     expect($user->currentTeam->fresh())->not->toBeNull();
 })->skip(function () {
     return !Features::hasTeamFeatures();
-}, TestMessage::TEAM_SUPPORT_IS_NOT_ENABLED->value);
+}, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);

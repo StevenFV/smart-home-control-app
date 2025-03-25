@@ -1,13 +1,14 @@
 <?php
 
+use App\Enums\Role;
 use Laravel\Jetstream\Features;
-use Tests\Enums\TestMessage;
+use Tests\Enums\Authentication;
 
 test('user accounts can be deleted', function () {
-    $this->actingAs($user = $this->createUserWithUserRole());
+    $this->actingAs($user = $this->createUser(Role::User));
 
     $this->delete('/user', [
-        'password' => TestMessage::TEST_PASSWORD->value,
+        'password' => Authentication::TEST_PASSWORD->value,
     ]);
 
     expect($user->fresh())->toBeNull();
@@ -16,10 +17,10 @@ test('user accounts can be deleted', function () {
 }, 'Account deletion is not enabled.');
 
 test('correct password must be provided before account can be deleted', function () {
-    $this->actingAs($user = $this->createUserWithUserRole());
+    $this->actingAs($user = $this->createUser(Role::User));
 
     $this->delete('/user', [
-        'password' => TestMessage::WRONG_PASSWORD->value,
+        'password' => Authentication::WRONG_PASSWORD->value,
     ]);
 
     expect($user->fresh())->not->toBeNull();
