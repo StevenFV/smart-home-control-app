@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Devices;
 
 use App\Abstracts\Devices\AbstractDataConstructor;
-use App\DevicePolicy;
 use App\Enums\DeviceModelClassName;
 use App\Models\Devices\Lighting;
 use Illuminate\Support\Collection;
@@ -16,9 +15,6 @@ class LightingController extends AbstractDataConstructor
     public function __construct(Lighting $lighting)
     {
         parent::__construct($lighting);
-
-        $devicePolicy = new DevicePolicy();
-        $devicePolicy->check();
     }
 
     public function index(): Response
@@ -30,7 +26,7 @@ class LightingController extends AbstractDataConstructor
 
     public function fetchDataForFrontend(): Collection
     {
-        Artisan::call('device:store-data', ['deviceModelClassName' => DeviceModelClassName::LIGHTING->value]);
+        Artisan::call('device:store-data', ['deviceModelClassName' => DeviceModelClassName::Lighting->value]);
 
         return $this->dataForFrontend();
     }

@@ -14,6 +14,10 @@ const props = defineProps({
     lightingData: {
         type: Object,
         default: null,
+    },
+    permissions: {
+        type: Object,
+        default: null,
     }
 })
 
@@ -123,6 +127,7 @@ const toggleLight = async (newStates, changedKey) => {
                                 </template>
                             </div>
                             <ToggleSwitch
+                                :disabled="!permissions.lighting.controlDevices"
                                 v-model="state[item.friendlyName]"
                                 class="ml-1"
                             />

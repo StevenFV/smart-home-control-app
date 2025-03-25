@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
-use Database\Factories\UserFactory;
+use App\Enums\Role;
+use Tests\Enums\Authentication;
 
 const LOGIN = '/login';
 
@@ -12,11 +12,11 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    $user = $this->createUser(Role::User);
 
     $response = $this->post(LOGIN, [
         'email' => $user->email,
-        'password' => UserFactory::getUserPassword(),
+        'password' => Authentication::TEST_PASSWORD->value,
     ]);
 
     $this->assertAuthenticated();
@@ -24,11 +24,11 @@ test('users can authenticate using the login screen', function () {
 });
 
 test('users cannot authenticate with invalid password', function () {
-    $user = User::factory()->create();
+    $user = $this->createUser(Role::User);
 
     $this->post(LOGIN, [
         'email' => $user->email,
-        'password' => 'wrong-password',
+        'password' => Authentication::WRONG_PASSWORD->value,
     ]);
 
     $this->assertGuest();

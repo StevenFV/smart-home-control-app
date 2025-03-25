@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\PermissionRole;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,27 +15,41 @@ use Laravel\Jetstream\Features;
 class UserFactory extends Factory
 {
     /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
+
+    /**
+     * The current name being used by the factory.
+     */
+    protected static ?string $name;
+
+    /**
+     * The current email being used by the factory.
+     */
+    protected static ?string $email;
+
+    /**
+     * The current role being used by the factory.
+     */
+    protected static ?int $roleId;
+
+    /**
      * Define the model's default state.
-     *
-     * The first user created by UserFactory is a developer user with dev password from the configuration.
-     * Later users are fake users with default password from the configuration.
      */
     public function definition(): array
     {
-        $isUserDevExist = self::isUserDevExist();
-
         return [
-            'name' => $isUserDevExist ? fake()->name() : config('auth.dev.name'),
-            'email' => $isUserDevExist ? fake()->unique()->safeEmail() : config('auth.dev.email'),
+            'name' => static::$name ??= fake()->name(),
+            'email' => static::$email ??= fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => $isUserDevExist ?
-                Hash::make(config('auth.defaults.passwords')) :
-                Hash::make(config('auth.dev.passwords')),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
-            'remember_token' => Str::random(10),
-            'profile_photo_path' => null,
-            'current_team_id' => null,
+            'role_id' => static::$roleId ??= fake()->unique()->numberBetween(1, 3),
+            // 'profile_photo_path' => null,
+            // 'current_team_id' => null,
         ];
     }
 
@@ -75,41 +88,5 @@ class UserFactory extends Factory
                 $user->save();
             }
         });
-    }
-
-    /**
-     * Indicate that the user should have an admin role.
-     */
-    public function withAdminRole(): static
-    {
-        return $this->afterCreating(function (User $user) {
-            $team = $user->ownedTeams()->first();
-
-            if ($team) {
-                $team->users()->attach($user->id, ['role' => PermissionRole::ADMIN]);
-            }
-        });
-    }
-
-    /**
-     * Checks if a developer user exists based on the email provided in the configuration.
-     *
-     * @return bool True if the developer user exists, otherwise false.
-     */
-    public static function isUserDevExist(): bool
-    {
-        return User::where('email', config('auth.dev.email'))->exists();
-    }
-
-    /**
-     * Retrieves the user password based on the existence of a developer user.
-     *
-     * This method selects the appropriate password according to the UserFactory::definition() logic.
-     *
-     * @return string The selected password from the configuration.
-     */
-    public static function getUserPassword(): string
-    {
-        return UserFactory::isUserDevExist() ? config('auth.dev.passwords') : config('auth.defaults.passwords');
     }
 }

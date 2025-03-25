@@ -14,7 +14,6 @@ use Tests\TestCase;
 |
 */
 
-uses(TestCase::class)->in('Feature', 'Unit');
 uses(RefreshDatabase::class)->in('Feature');
 
 /*
@@ -28,9 +27,7 @@ uses(RefreshDatabase::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+// Custom expectations are defined in the tests/Expectations.php file.
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +40,4 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
-    // ..
-}
+pest()->extend(TestCase::class)->in('Feature');

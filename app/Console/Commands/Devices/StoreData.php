@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Devices;
 
-use App\Enums\Zigbee2MqttUtility;
+use App\Enums\Zigbee2MQTT;
 use App\Interfaces\Devices\DeviceStoreInterface;
 use App\Traits\Devices\DeviceModelNamespaceResolverTrait;
 use Illuminate\Console\Command;
@@ -46,7 +46,7 @@ class StoreData extends Command implements DeviceStoreInterface
     {
         $friendlyNames = $model::distinct('friendly_name')->pluck('friendly_name')->toArray();
         $topicFilters = array_map(function ($friendlyName) {
-            return Zigbee2MqttUtility::BASE_TOPIC->value . $friendlyName;
+            return Zigbee2MQTT::BaseTopic->value . $friendlyName;
         }, $friendlyNames);
 
         return array_map([$this, 'fetchAndProcessMqttMessages'], $topicFilters);
@@ -65,8 +65,8 @@ class StoreData extends Command implements DeviceStoreInterface
                 },
             );
             $mqtt->publish(
-                $topicFilter . Zigbee2MqttUtility::GET->value,
-                Zigbee2MqttUtility::STATE_DEVICE_PAYLOAD->value,
+                $topicFilter . Zigbee2MQTT::Get->value,
+                Zigbee2MQTT::StateDevicePayload->value,
             );
             $mqtt->loop();
 

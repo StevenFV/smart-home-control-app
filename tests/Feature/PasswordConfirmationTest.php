@@ -1,15 +1,16 @@
 <?php
 
+use App\Enums\Role;
 use App\Models\User;
-use Database\Factories\UserFactory;
 use Laravel\Jetstream\Features;
+use Tests\Enums\Authentication;
 
 const USER_CONFIRM_PASSWORD = '/user/confirm-password';
 
 test('confirm password screen can be rendered', function () {
     $user = Features::hasTeamFeatures()
                     ? User::factory()->withPersonalTeam()->create()
-                    : User::factory()->create();
+                    : $this->createUser(Role::User);
 
     $response = $this->actingAs($user)->get(USER_CONFIRM_PASSWORD);
 
@@ -17,10 +18,10 @@ test('confirm password screen can be rendered', function () {
 });
 
 test('password can be confirmed', function () {
-    $user = User::factory()->create();
+    $user = $this->createUser(Role::User);
 
     $response = $this->actingAs($user)->post(USER_CONFIRM_PASSWORD, [
-        'password' => UserFactory::getUserPassword(),
+        'password' => Authentication::TEST_PASSWORD->value,
     ]);
 
     $response->assertRedirect();
@@ -28,10 +29,10 @@ test('password can be confirmed', function () {
 });
 
 test('password is not confirmed with invalid password', function () {
-    $user = User::factory()->create();
+    $user = $this->createUser(Role::User);
 
     $response = $this->actingAs($user)->post(USER_CONFIRM_PASSWORD, [
-        'password' => 'wrong-password',
+        'password' => Authentication::WRONG_PASSWORD->value,
     ]);
 
     $response->assertSessionHasErrors();

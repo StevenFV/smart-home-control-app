@@ -1,14 +1,16 @@
 <?php
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use Tests\Enums\Message;
 
 test('api token permissions can be updated', function () {
     if (Features::hasTeamFeatures()) {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     } else {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = $this->createUser(Role::User));
     }
 
     $token = $user->tokens()->create([
@@ -31,4 +33,4 @@ test('api token permissions can be updated', function () {
         ->can('missing-permission')->toBeFalse();
 })->skip(function () {
     return ! Features::hasApiFeatures();
-}, 'API support is not enabled.');
+}, Message::API_SUPPORT_IS_NOT_ENABLED->value);

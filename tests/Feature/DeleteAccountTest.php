@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\User;
-use Database\Factories\UserFactory;
+use App\Enums\Role;
 use Laravel\Jetstream\Features;
+use Tests\Enums\Authentication;
 
 test('user accounts can be deleted', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = $this->createUser(Role::User));
 
     $this->delete('/user', [
-        'password' => UserFactory::getUserPassword(),
+        'password' => Authentication::TEST_PASSWORD->value,
     ]);
 
     expect($user->fresh())->toBeNull();
@@ -17,10 +17,10 @@ test('user accounts can be deleted', function () {
 }, 'Account deletion is not enabled.');
 
 test('correct password must be provided before account can be deleted', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = $this->createUser(Role::User));
 
     $this->delete('/user', [
-        'password' => 'wrong-password',
+        'password' => Authentication::WRONG_PASSWORD->value,
     ]);
 
     expect($user->fresh())->not->toBeNull();

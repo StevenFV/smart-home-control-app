@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Laravel\Jetstream\Contracts\DeletesTeams;
 use Laravel\Jetstream\Contracts\DeletesUsers;
+use Laravel\Jetstream\Features;
+use Throwable;
 
 class DeleteUser implements DeletesUsers
 {
@@ -17,11 +19,14 @@ class DeleteUser implements DeletesUsers
 
     /**
      * Delete the given user.
+     * @throws Throwable
      */
     public function delete(User $user): void
     {
         DB::transaction(function () use ($user) {
-            $this->deleteTeams($user);
+            if (Features::hasTeamFeatures()) {
+                $this->deleteTeams($user);
+            }
             $user->deleteProfilePhoto();
             $user->tokens->each->delete();
             $user->delete();

@@ -5,6 +5,6 @@ export default Object.freeze({
      * have to be changed too for consistency with Laravel.
     */
 
-    VIEW_LIGHTING: 'view lighting',
-    CONTROL_LIGHTING: 'control lighting'
+    GET: 'get',
+    SET: 'set'
 });

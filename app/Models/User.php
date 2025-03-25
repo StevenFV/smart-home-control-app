@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
+use App\Enums\Permission as PermissionEnums;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property string $role_id The user's role
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -51,15 +54,44 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function hasRole(string $role): bool
+    /**
+     * Get the role that owns the user.
+     */
+    public function role(): BelongsTo
     {
-        return $this->getRole() === $role;
+        return $this->belongsTo(Role::class);
     }
 
-    private function getRole(): ?string
+    public function hasRole(string $role): bool
     {
-        return $this->currentTeam->users()->where('users.id', $this->id)->first()->membership->role ?? null;
+        return $this->role()->first()->identifier === $role;
     }
+
+    /**
+     * Check if a user has a specific permission through their role
+     */
+    public function hasPermission(PermissionEnums $permission): bool
+    {
+        if (!$this->role) {
+            return false;
+        }
+
+        return $this->role->hasPermission($permission->value);
+    }
+
+    public function hasAnyRole(array $roles): bool
+    {
+        return collect($roles)->contains(fn($role) => $this->hasRole($role));
+    }
+
+    /**
+     * Check if user has any of the given permissions
+     */
+    public function hasAnyPermission(array $permissions): bool
+    {
+        return collect($permissions)->contains(fn($permission) => $this->hasPermission($permission));
+    }
+
 
     /**
      * Get the default profile photo URL if no profile photo has been uploaded.

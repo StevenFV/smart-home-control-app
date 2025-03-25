@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
+use App\Enums\Role;
 
 test('profile information can be updated', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = $this->createUser(Role::User));
 
     $this->put('/user/profile-information', [
         'name' => 'Test Name',

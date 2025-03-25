@@ -1,15 +1,17 @@
 <?php
 
 use App\Models\User;
-use Laravel\Fortify\Features;
+use Laravel\Fortify\Features as FortifyFeatures;
+use Laravel\Jetstream\Features as JetstreamFeatures;
 use Laravel\Jetstream\Jetstream;
+use Tests\Enums\Message;
 
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
 
     $response->assertStatus(200);
 })->skip(function () {
-    return !Features::enabled(Features::registration());
+    return !FortifyFeatures::enabled(FortifyFeatures::registration());
 }, 'Registration support is not enabled.');
 
 test('registration screen cannot be rendered if support is disabled', function () {
@@ -17,8 +19,8 @@ test('registration screen cannot be rendered if support is disabled', function (
 
     $response->assertStatus(404);
 })->skip(function () {
-    return Features::enabled(Features::registration());
-}, 'Registration support is enabled.');
+    return FortifyFeatures::enabled(FortifyFeatures::registration());
+}, Message::REGISTRATION_SUPPORT_IS_ENABLED->value);
 
 test('new user with team invitation can register', function () {
     $user = User::factory()->withPersonalTeam()->create();
@@ -39,8 +41,10 @@ test('new user with team invitation can register', function () {
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
 })->skip(function () {
-    return !Features::enabled(Features::registration());
-}, 'Registration support is not enabled.');
+    return !FortifyFeatures::enabled(FortifyFeatures::registration());
+}, 'Registration support is not enabled.')->skip(function () {
+    return !JetstreamFeatures::hasTeamFeatures();
+}, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('new user without team invitation cannot register', function () {
     $response = $this->post('/register', [
@@ -53,5 +57,7 @@ test('new user without team invitation cannot register', function () {
 
     expect($response->exception->getMessage())->toBe('The selected email is invalid.');
 })->skip(function () {
-    return !Features::enabled(Features::registration());
-}, 'Registration support is not enabled.');
+    return !FortifyFeatures::enabled(FortifyFeatures::registration());
+}, Message::REGISTRATION_SUPPORT_IS_NOT_ENABLED->value)->skip(function () {
+    return !JetstreamFeatures::hasTeamFeatures();
+}, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
