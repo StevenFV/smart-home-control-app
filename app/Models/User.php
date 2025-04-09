@@ -72,7 +72,7 @@ class User extends Authenticatable
      */
     public function hasPermission(PermissionEnums $permission): bool
     {
-        if (!$this->role) {
+        if (! $this->role) {
             return false;
         }
 
@@ -81,7 +81,7 @@ class User extends Authenticatable
 
     public function hasAnyRole(array $roles): bool
     {
-        return collect($roles)->contains(fn($role) => $this->hasRole($role));
+        return collect($roles)->contains(fn ($role) => $this->hasRole($role));
     }
 
     /**
@@ -89,9 +89,8 @@ class User extends Authenticatable
      */
     public function hasAnyPermission(array $permissions): bool
     {
-        return collect($permissions)->contains(fn($permission) => $this->hasPermission($permission));
+        return collect($permissions)->contains(fn ($permission) => $this->hasPermission($permission));
     }
-
 
     /**
      * Get the default profile photo URL if no profile photo has been uploaded.

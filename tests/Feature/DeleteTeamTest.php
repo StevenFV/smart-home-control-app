@@ -23,7 +23,7 @@ test('teams can be deleted', function () {
     expect($team->fresh())->toBeNull();
     expect($otherUser->fresh()->teams)->toHaveCount(0);
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('personal teams cant be deleted', function () {
@@ -33,5 +33,5 @@ test('personal teams cant be deleted', function () {
 
     expect($user->currentTeam->fresh())->not->toBeNull();
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);

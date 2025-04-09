@@ -17,7 +17,9 @@ class StoreData extends Command implements DeviceStoreInterface
     use DeviceModelNamespaceResolverTrait;
 
     protected $signature = 'device:store-data {deviceModelClassName}';
+
     protected $description = 'Get device data from mqtt broker and put to home-control-app database';
+
     private ?array $messageDetails = null;
 
     public function handle(): void

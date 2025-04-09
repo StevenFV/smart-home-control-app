@@ -17,7 +17,7 @@ test('team members can be removed from teams', function () {
 
     expect($user->currentTeam->fresh()->users)->toHaveCount(0);
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('only team owner can remove team members', function () {
@@ -34,5 +34,5 @@ test('only team owner can remove team members', function () {
 
     $response->assertStatus(403);
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);

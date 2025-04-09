@@ -23,7 +23,7 @@ test('team member roles can be updated', function () {
         'user',
     ))->toBeTrue();
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('only team owner can update team member roles', function () {
@@ -49,5 +49,5 @@ test('only team owner can update team member roles', function () {
         'admin',
     ))->and($isActionUnauthorizedMessage)->toBeTrue();
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);

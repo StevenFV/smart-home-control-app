@@ -19,7 +19,7 @@ test('users can leave teams', function () {
 
     expect($user->currentTeam->fresh()->users)->toHaveCount(0);
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('team owners cant leave their own team', function () {
@@ -31,5 +31,5 @@ test('team owners cant leave their own team', function () {
 
     expect($user->currentTeam->fresh())->not->toBeNull();
 })->skip(function () {
-    return !Features::hasTeamFeatures();
+    return ! Features::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);

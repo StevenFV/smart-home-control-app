@@ -34,11 +34,11 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'ziggy' => fn() => [
+            'ziggy' => fn () => [
                 ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
             ],
-            'locale' => fn() => collect(config('app.locale')),
+            'locale' => fn () => collect(config('app.locale')),
             'permissions' => $request->user() ? [
                 'lighting' => [
                     PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Permission::class),
