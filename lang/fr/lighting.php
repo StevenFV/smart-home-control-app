@@ -18,4 +18,7 @@ return [
         'power' => 'puissance: ',
         'state' => 'état: ',
     ],
+    'error_message' => [
+        'no_data' => 'une erreur est survenue',
+    ],
 ];

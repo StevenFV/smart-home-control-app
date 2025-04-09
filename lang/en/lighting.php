@@ -19,4 +19,7 @@ return [
         'power' => 'power: ',
         'state' => 'state: ',
     ],
+    'error_message' => [
+        'no_data' => 'an error has occurred',
+    ],
 ];
