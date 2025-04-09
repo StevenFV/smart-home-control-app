@@ -7,12 +7,10 @@ use App\Interfaces\Devices\DeviceStoreInterface;
 use App\Traits\Devices\DeviceModelNamespaceResolverTrait;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use PhpMqtt\Client\Exceptions\DataTransferException;
-use PhpMqtt\Client\Exceptions\InvalidMessageException;
+use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\Exceptions\MqttClientException;
-use PhpMqtt\Client\Exceptions\ProtocolViolationException;
-use PhpMqtt\Client\Exceptions\RepositoryException;
 use PhpMqtt\Client\Facades\MQTT;
+use PhpMqtt\Client\MqttClient;
 
 class StoreData extends Command implements DeviceStoreInterface
 {
@@ -21,6 +19,8 @@ class StoreData extends Command implements DeviceStoreInterface
     protected $signature = 'device:store-data {deviceModelClassName}';
 
     protected $description = 'Get device data from mqtt broker and put to home-control-app database';
+
+    private ?array $messageDetails = null;
 
     public function handle(): void
     {
@@ -52,35 +52,34 @@ class StoreData extends Command implements DeviceStoreInterface
         return array_map([$this, 'fetchAndProcessMqttMessages'], $topicFilters);
     }
 
-    public function fetchAndProcessMqttMessages($topicFilter): string|array
+    public function fetchAndProcessMqttMessages($topicFilter): array
     {
-        $mqtt = MQTT::connection();
-
         try {
+            $mqtt = MQTT::connection();
+
             $mqtt->subscribe(
                 $topicFilter,
-                function (string $topic, string $message) use ($mqtt, &$messageDetails) {
-                    $messageDetails = $this->extractMessageDetails($topic, $message);
+                function (string $topic, string $message) use ($mqtt) {
+                    $this->messageDetails = $this->extractMessageDetails($topic, $message);
                     $mqtt->interrupt();
                 },
+                MqttClient::QOS_AT_MOST_ONCE,
             );
+
             $mqtt->publish(
                 $topicFilter . Zigbee2MQTT::Get->value,
                 Zigbee2MQTT::StateDevicePayload->value,
             );
-            $mqtt->loop();
 
-            return $messageDetails;
-        } catch (
-            ProtocolViolationException|
-            InvalidMessageException|
-            MqttClientException|
-            RepositoryException|
-            DataTransferException
-            $exception
-        ) {
-            return $exception->getMessage();
+            $mqtt->loop(true, true, 0);
+        } catch (MqttClientException $e) {
+            Log::info(
+                'Fetch and process mqtt failed with the error message: {message}.',
+                ['message' => $e->getMessage()],
+            );
         }
+
+        return $this->messageDetails ?? $this->extractMessageDetails($topicFilter, '');
     }
 
     private function extractMessageDetails(string $topic, string $message): array

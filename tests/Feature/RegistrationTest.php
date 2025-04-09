@@ -11,7 +11,7 @@ test('registration screen can be rendered', function () {
 
     $response->assertStatus(200);
 })->skip(function () {
-    return !FortifyFeatures::enabled(FortifyFeatures::registration());
+    return ! FortifyFeatures::enabled(FortifyFeatures::registration());
 }, 'Registration support is not enabled.');
 
 test('registration screen cannot be rendered if support is disabled', function () {
@@ -41,9 +41,9 @@ test('new user with team invitation can register', function () {
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
 })->skip(function () {
-    return !FortifyFeatures::enabled(FortifyFeatures::registration());
+    return ! FortifyFeatures::enabled(FortifyFeatures::registration());
 }, 'Registration support is not enabled.')->skip(function () {
-    return !JetstreamFeatures::hasTeamFeatures();
+    return ! JetstreamFeatures::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);
 
 test('new user without team invitation cannot register', function () {
@@ -57,7 +57,7 @@ test('new user without team invitation cannot register', function () {
 
     expect($response->exception->getMessage())->toBe('The selected email is invalid.');
 })->skip(function () {
-    return !FortifyFeatures::enabled(FortifyFeatures::registration());
+    return ! FortifyFeatures::enabled(FortifyFeatures::registration());
 }, Message::REGISTRATION_SUPPORT_IS_NOT_ENABLED->value)->skip(function () {
-    return !JetstreamFeatures::hasTeamFeatures();
+    return ! JetstreamFeatures::hasTeamFeatures();
 }, Message::TEAM_SUPPORT_IS_NOT_ENABLED->value);

@@ -122,15 +122,21 @@ const toggleLight = async (newStates, changedKey) => {
                                 :key="indexValue"
                                 class="p-1 font-bold text-gray-600"
                             >
-                                <template v-if="label && value">
+                                <template v-if="label">
                                     {{ displayText(MESSAGE_LABEL, label, value) }}
                                 </template>
                             </div>
                             <ToggleSwitch
-                                :disabled="!permissions.lighting.controlDevices"
+                                :disabled="!permissions.lighting.controlDevices || !item.data.state"
                                 v-model="state[item.friendlyName]"
                                 class="ml-1"
                             />
+                            <div
+                                v-if="!item.data.state"
+                                class="text-red-500 text-left pt-1 pb-2 font-bold"
+                            >
+                                {{ trans('lighting.error_message.no_data').toUpperCase() }}
+                            </div>
                         </div>
                     </div>
                 </div>

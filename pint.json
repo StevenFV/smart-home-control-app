@@ -1,3 +1,7 @@
 {
-    "preset": "per"
+    "preset": "laravel",
+    "rules": {
+        "@PER-CS": true,
+        "@PSR12": true
+    }
 }

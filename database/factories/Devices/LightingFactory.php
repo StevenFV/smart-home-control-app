@@ -14,6 +14,7 @@ class LightingFactory extends Factory
 {
     /**
      * Define the model's default state.
+     *
      * @throws RandomException
      */
     public function definition(): array
@@ -44,7 +45,7 @@ class LightingFactory extends Factory
         /**
          * @throws RandomException
          */
-        $randomWord = fn() => Str::lower(Str::random(random_int(3, 10)));
+        $randomWord = fn () => Str::lower(Str::random(random_int(3, 10)));
 
         return implode('/', [
             $randomWord(),
