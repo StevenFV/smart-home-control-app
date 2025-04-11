@@ -12,12 +12,4 @@ class Lighting extends Model
     protected $table = 'devices.lights';
 
     protected $fillable = ['ieee_address', 'friendly_name', 'brightness', 'energy', 'linkquality', 'power', 'state'];
-
-    public function toArrayWithoutIeeeAddress(): array
-    {
-        $attributes = $this->toArray();
-        unset($attributes['ieee_address']);
-
-        return $attributes;
-    }
 }
