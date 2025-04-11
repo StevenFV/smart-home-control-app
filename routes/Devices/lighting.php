@@ -11,6 +11,3 @@ Route::get('devices/lighting', [LightingController::class, 'index'])->name('ligh
 Route::post('devices/lighting/set', [PublishMessage::class, 'handle'])
     ->can(PermissionEnums::ControlDevices->value, Permission::class)
     ->name('lighting.set');
-Route::get('devices/lighting/get', [LightingController::class, 'fetchDataForFrontend'])
-    ->can(PermissionEnums::ViewDevices->value, Permission::class)
-    ->name('lighting.get');
