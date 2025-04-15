@@ -146,9 +146,8 @@ const logout = () => {
                                             Profile
                                         </DropdownLink>
 
-                                        <DropdownLink :href="route('locale', { locale: $page.props.locale })">
+                                        <DropdownLink :href="route('app-lang.switch')">
                                             Switch Langue
-                                            {{ $page.props.locale }}
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
