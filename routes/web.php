@@ -43,4 +43,5 @@ Route::middleware(
     })->name('dashboard');
 
     require_once __DIR__ . '/Devices/lighting.php';
+    require_once __DIR__ . '/Devices/heating.php';
 });
