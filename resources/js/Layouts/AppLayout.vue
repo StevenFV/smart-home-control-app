@@ -78,16 +78,16 @@ const logout = () => {
                                         <div class="w-60">
                                             <!-- Team Management -->
                                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                                Manage Team
+                                                {{ trans('app.manage_team') }}
                                             </div>
 
                                             <!-- Team Settings -->
                                             <DropdownLink :href="route('teams.show', $page.props.auth.user.current_team)">
-                                                Team Settings
+                                                {{ trans('app.team_settings') }}
                                             </DropdownLink>
 
                                             <DropdownLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')">
-                                                Create New Team
+                                                {{ trans('app.create_new_team') }}
                                             </DropdownLink>
 
                                             <!-- Team Switcher -->
@@ -95,7 +95,7 @@ const logout = () => {
                                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
                                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Switch Teams
+                                                    {{ trans('app.switch_teams') }}
                                                 </div>
 
                                                 <template v-for="team in $page.props.auth.user.all_teams" :key="team.id">
@@ -139,19 +139,19 @@ const logout = () => {
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                            {{ trans('app.manage_account') }}
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
-                                            Profile
+                                            {{ trans('app.profile') }}
                                         </DropdownLink>
 
                                         <DropdownLink :href="route('app-lang.switch')">
-                                            Switch Langue
+                                            {{ trans('app.lang_switch') }}
                                         </DropdownLink>
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
-                                            API Tokens
+                                            {{ trans('app.api_tokens') }}
                                         </DropdownLink>
 
                                         <div class="border-t border-gray-200 dark:border-gray-600" />
@@ -159,7 +159,7 @@ const logout = () => {
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <DropdownLink as="button">
-                                                Log Out
+                                                {{ trans('app.logout') }}
                                             </DropdownLink>
                                         </form>
                                     </template>
@@ -200,7 +200,7 @@ const logout = () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            {{ trans('app.dashboard') }}
                         </ResponsiveNavLink>
                     </div>
 
@@ -223,17 +223,17 @@ const logout = () => {
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
-                                Profile
+                                {{ trans('app.profile') }}
                             </ResponsiveNavLink>
 
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
-                                API Tokens
+                                {{ trans('app.api_tokens') }}
                             </ResponsiveNavLink>
 
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <ResponsiveNavLink as="button">
-                                    Log Out
+                                    {{ trans('app.logout') }}
                                 </ResponsiveNavLink>
                             </form>
 
@@ -242,16 +242,16 @@ const logout = () => {
                                 <div class="border-t border-gray-200 dark:border-gray-600" />
 
                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                    Manage Team
+                                    {{ trans('app.manage_team') }}
                                 </div>
 
                                 <!-- Team Settings -->
                                 <ResponsiveNavLink :href="route('teams.show', $page.props.auth.user.current_team)" :active="route().current('teams.show')">
-                                    Team Settings
+                                    {{ trans('app.team_settings') }}
                                 </ResponsiveNavLink>
 
                                 <ResponsiveNavLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')" :active="route().current('teams.create')">
-                                    Create New Team
+                                    {{ trans('app.create_new_team') }}
                                 </ResponsiveNavLink>
 
                                 <!-- Team Switcher -->
@@ -259,7 +259,7 @@ const logout = () => {
                                     <div class="border-t border-gray-200 dark:border-gray-600" />
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">
-                                        Switch Teams
+                                        {{ trans('app.switch_teams') }}
                                     </div>
 
                                     <template v-for="team in $page.props.auth.user.all_teams" :key="team.id">
