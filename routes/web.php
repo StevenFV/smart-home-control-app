@@ -3,7 +3,6 @@
 use App\Enums\Authenticate;
 use App\Enums\Web;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -26,12 +25,18 @@ Route::middleware(
         Web::AdminOrUserOrGuest->value,
     ],
 )->group(function () {
-    Route::get('locale/{locale}', function (string $locale) {
-        $locale === 'en' ? $locale = 'fr' : $locale = 'en';
-        Session::Put('locale', $locale);
+    Route::get('app-lang-switch', function () {
+        App::isLocale('en') ? $locale = 'fr' : $locale = 'en';
+        session()->put('locale', $locale);
 
+        /*
+         * The Inertia::location() method will generate a 409 Conflict response and include the destination URL in the
+         * X-Inertia-Location header.
+         * When this response is received client-side,
+         * Inertia will automatically perform a window.location = url visit.
+         */
         return Inertia::location(url()->previous());
-    })->name('locale');
+    })->name('app-lang.switch');
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');

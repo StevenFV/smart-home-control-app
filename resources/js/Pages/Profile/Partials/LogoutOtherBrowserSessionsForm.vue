@@ -8,6 +8,7 @@ import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {trans} from "laravel-vue-i18n";
 
 defineProps({
     sessions: Array,
@@ -45,16 +46,16 @@ const closeModal = () => {
 <template>
     <ActionSection>
         <template #title>
-            Browser Sessions
+            {{ trans('profile.browser_sessions.title') }}
         </template>
 
         <template #description>
-            Manage and log out your active sessions on other browsers and devices.
+            {{ trans('profile.browser_sessions.description') }}
         </template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.
+                {{ trans('profile.browser_sessions.information_text') }}
             </div>
 
             <!-- Other Browser Sessions -->
@@ -72,15 +73,15 @@ const closeModal = () => {
 
                     <div class="ms-3">
                         <div class="text-sm text-gray-600 dark:text-gray-400">
-                            {{ session.agent.platform ? session.agent.platform : 'Unknown' }} - {{ session.agent.browser ? session.agent.browser : 'Unknown' }}
+                            {{ session.agent.platform ? session.agent.platform : trans('profile.browser_sessions.unknown') }} - {{ session.agent.browser ? session.agent.browser : trans('profile.browser_sessions.unknown') }}
                         </div>
 
                         <div>
                             <div class="text-xs text-gray-500">
                                 {{ session.ip_address }},
 
-                                <span v-if="session.is_current_device" class="text-green-500 font-semibold">This device</span>
-                                <span v-else>Last active {{ session.last_active }}</span>
+                                <span v-if="session.is_current_device" class="text-green-500 font-semibold">{{ trans('profile.browser_sessions.this_device') }}</span>
+                                <span v-else>{{ trans('profile.browser_sessions.last_active') + ' ' + session.last_active }}</span>
                             </div>
                         </div>
                     </div>
@@ -89,22 +90,22 @@ const closeModal = () => {
 
             <div class="flex items-center mt-5">
                 <PrimaryButton @click="confirmLogout">
-                    Log Out Other Browser Sessions
+                    {{ trans('profile.browser_sessions.log_out_other_browser_sessions') }}
                 </PrimaryButton>
 
                 <ActionMessage :on="form.recentlySuccessful" class="ms-3">
-                    Done.
+                    {{ trans('profile.browser_sessions.done') }}
                 </ActionMessage>
             </div>
 
             <!-- Log Out Other Devices Confirmation Modal -->
             <DialogModal :show="confirmingLogout" @close="closeModal">
                 <template #title>
-                    Log Out Other Browser Sessions
+                    {{ trans('profile.browser_sessions.log_out_other_browser_sessions') }}
                 </template>
 
                 <template #content>
-                    Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.
+                    {{ trans('profile.browser_sessions.logout_all_devices_message') }}
 
                     <div class="mt-4">
                         <TextInput
@@ -123,7 +124,7 @@ const closeModal = () => {
 
                 <template #footer>
                     <SecondaryButton @click="closeModal">
-                        Cancel
+                        {{ trans('profile.browser_sessions.cancel') }}
                     </SecondaryButton>
 
                     <PrimaryButton
@@ -132,7 +133,7 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="logoutOtherBrowserSessions"
                     >
-                        Log Out Other Browser Sessions
+                        {{ trans('profile.browser_sessions.log_out_other_browser_sessions') }}
                     </PrimaryButton>
                 </template>
             </DialogModal>

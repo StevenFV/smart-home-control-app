@@ -2,6 +2,7 @@
 
 return [
     'index' => 'éclairage',
+    'lighting' => 'Éclairage',
     'topic_title' => [
         'light/home/outside/front_patio/recessed_light' => 'terrasse avant',
         'light/home/indoor/ground_floor/entrance_west/ceiling_light' => 'entrée principale',

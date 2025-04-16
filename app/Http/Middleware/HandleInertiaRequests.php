@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Enums\Permission as PermissionEnums;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -38,7 +39,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
             ],
-            'locale' => fn () => collect(config('app.locale')),
+            'locale' => fn () => App::currentLocale(),
             'permissions' => $request->user() ? [
                 'lighting' => [
                     PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Permission::class),

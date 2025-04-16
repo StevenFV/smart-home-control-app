@@ -8,6 +8,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {trans} from "laravel-vue-i18n";
 
 const props = defineProps({
     user: Object,
@@ -78,11 +79,11 @@ const clearPhotoFileInput = () => {
 <template>
     <FormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            {{ trans('profile.profile_information.title') }}
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            {{ trans('profile.profile_information.description') }}
         </template>
 
         <template #form>
@@ -113,7 +114,7 @@ const clearPhotoFileInput = () => {
                 </div>
 
                 <SecondaryButton class="mt-2 me-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
+                    {{ trans('profile.profile_information.select_a_new_photo') }}
                 </SecondaryButton>
 
                 <SecondaryButton
@@ -122,7 +123,7 @@ const clearPhotoFileInput = () => {
                     class="mt-2"
                     @click.prevent="deletePhoto"
                 >
-                    Remove Photo
+                    {{ trans('profile.profile_information.remove_photo') }}
                 </SecondaryButton>
 
                 <InputError :message="form.errors.photo" class="mt-2" />
@@ -130,7 +131,9 @@ const clearPhotoFileInput = () => {
 
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name">
+                    {{ trans('profile.profile_information.name') }}
+                </InputLabel>
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -144,7 +147,9 @@ const clearPhotoFileInput = () => {
 
             <!-- Email -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email">
+                    {{ trans('profile.profile_information.email') }}
+                </InputLabel>
                 <TextInput
                     id="email"
                     v-model="form.email"
@@ -157,7 +162,7 @@ const clearPhotoFileInput = () => {
 
                 <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
                     <p class="text-sm mt-2 dark:text-white">
-                        Your email address is unverified.
+                        {{ trans('profile.profile_information.email_verification.unverified') }}
 
                         <Link
                             :href="route('verification.send')"
@@ -166,12 +171,12 @@ const clearPhotoFileInput = () => {
                             class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-gray-800"
                             @click.prevent="sendEmailVerification"
                         >
-                            Click here to re-send the verification email.
+                            {{ trans('profile.profile_information.email_verification.re_send') }}
                         </Link>
                     </p>
 
                     <div v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                        A new verification link has been sent to your email address.
+                        {{ trans('profile.profile_information.email_verification.link') }}
                     </div>
                 </div>
             </div>
@@ -179,11 +184,11 @@ const clearPhotoFileInput = () => {
 
         <template #actions>
             <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
+                {{ trans('profile.profile_information.saved') }}
             </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                {{ trans('profile.profile_information.save') }}
             </PrimaryButton>
         </template>
     </FormSection>

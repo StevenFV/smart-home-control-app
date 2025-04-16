@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {trans} from "laravel-vue-i18n";
 
 const form = useForm({
     name: '',
@@ -33,7 +34,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name">
+                    {{ trans('auth.register.name') }}
+                </InputLabel>
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -47,7 +50,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email">
+                    {{ trans('auth.register.email') }}
+                </InputLabel>
                 <TextInput
                     id="email"
                     v-model="form.email"
@@ -60,7 +65,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password">
+                    {{ trans('auth.register.password') }}
+                </InputLabel>
                 <TextInput
                     id="password"
                     v-model="form.password"
@@ -73,7 +80,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation">
+                    {{ trans('auth.register.password_confirmation') }}
+                </InputLabel>
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -100,11 +109,11 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <Link :href="route('login')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-gray-800">
-                    Already registered?
+                    {{ trans('auth.register.already_registered') }}
                 </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    {{ trans('auth.register.register') }}
                 </PrimaryButton>
             </div>
         </form>

@@ -7,6 +7,7 @@ import DialogModal from '@/Components/DialogModal.vue';
 import InputError from '@/Components/InputError.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {trans} from "laravel-vue-i18n";
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
@@ -40,32 +41,32 @@ const closeModal = () => {
 <template>
     <ActionSection>
         <template #title>
-            Delete Account
+            {{ trans('profile.delete_account.title') }}
         </template>
 
         <template #description>
-            Permanently delete your account.
+            {{ trans('profile.delete_account.description') }}
         </template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
+                {{ trans('profile.delete_account.information_text') }}
             </div>
 
             <div class="mt-5">
                 <DangerButton @click="confirmUserDeletion">
-                    Delete Account
+                    {{ trans('profile.delete_account.delete_account') }}
                 </DangerButton>
             </div>
 
             <!-- Delete Account Confirmation Modal -->
             <DialogModal :show="confirmingUserDeletion" @close="closeModal">
                 <template #title>
-                    Delete Account
+                    {{ trans('profile.delete_account.delete_account') }}
                 </template>
 
                 <template #content>
-                    Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
+                    {{ trans('profile.delete_account.permanently_delete_account_message') }}
 
                     <div class="mt-4">
                         <TextInput
@@ -84,7 +85,7 @@ const closeModal = () => {
 
                 <template #footer>
                     <SecondaryButton @click="closeModal">
-                        Cancel
+                        {{ trans('profile.delete_account.cancel') }}
                     </SecondaryButton>
 
                     <DangerButton
@@ -93,7 +94,7 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
-                        Delete Account
+                        {{ trans('profile.delete_account.delete_account') }}
                     </DangerButton>
                 </template>
             </DialogModal>
