@@ -8,6 +8,7 @@ use App\Traits\Devices\DeviceModelNamespaceResolverTrait;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Uri;
 use PhpMqtt\Client\Exceptions\MqttClientException;
 use PhpMqtt\Client\Facades\MQTT;
 use PhpMqtt\Client\MqttClient;
@@ -54,13 +55,19 @@ class StoreData extends Command implements DeviceStoreInterface
 
     public function fetchAndProcessMqttMessages($topicFilter): array
     {
+        $uri = Uri::of($topicFilter);
+        $deviceType = $uri->pathSegments()->get(1);
+        $payload = match ($deviceType) {
+            'light' => Zigbee2MQTT::StateDevicePayload->value,
+            'heat' => Zigbee2MQTT::LocalTemperatureDevicePayload->value,
+        };
+
         try {
             $mqtt = MQTT::connection();
 
             $mqtt->subscribe(
                 $topicFilter,
-                function (string $topic, string $message) use ($mqtt) {
-                    $this->messageDetails = $this->extractMessageDetails($topic, $message);
+                function () use ($mqtt) {
                     $mqtt->interrupt();
                 },
                 MqttClient::QOS_AT_MOST_ONCE,
@@ -68,10 +75,24 @@ class StoreData extends Command implements DeviceStoreInterface
 
             $mqtt->publish(
                 $topicFilter . Zigbee2MQTT::Get->value,
-                Zigbee2MQTT::StateDevicePayload->value,
+                $payload,
             );
 
-            $mqtt->loop(true, true, 0);
+            // Interrupt the loop after 1 second to avoid the loop to be stuck.
+            $loopCallback = function (MqttClient $mqtt, float $elapsedTime) {
+                if ($elapsedTime > 1) {
+                    $mqtt->interrupt();
+                }
+            };
+
+            $topicMessageCallback = function (MqttClient $mqtt, string $topic, string $message) {
+                $this->messageDetails = $this->extractMessageDetails($topic, $message);
+            };
+
+            $mqtt->registerMessageReceivedEventHandler($topicMessageCallback);
+            $mqtt->registerLoopEventHandler($loopCallback);
+            $mqtt->loop(true, true);
+
         } catch (MqttClientException $e) {
             Log::info(
                 'Fetch and process mqtt failed with the error message: {message}.',
