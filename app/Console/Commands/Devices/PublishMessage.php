@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Devices;
 
+use App\Enums\DeviceModelClassName;
 use App\Enums\Zigbee2MQTT;
 use App\Http\Requests\Devices\DeviceRequest;
 use Illuminate\Console\Command;
@@ -40,7 +41,10 @@ class PublishMessage extends Command
 
     private function createMessage(DeviceRequest $request): string
     {
-        return json_encode(['state' => $request['state']]);
+        return match ($request['deviceModelClassName']) {
+            DeviceModelClassName::Heating->value => json_encode(['occupied_heating_setpoint' => $request['occupiedHeatingSetpoint']]),
+            default => json_encode(['state' => $request['state']]),
+        };
     }
 
     private function getDeviceModelClassName(DeviceRequest $request): string

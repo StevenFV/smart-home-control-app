@@ -17,8 +17,8 @@ return new class () extends Migration {
             $table->float('energy')->nullable();
             $table->string('keypad_lockout')->nullable();
             $table->integer('linkquality')->nullable();
-            $table->integer('local_temperature')->nullable();
-            $table->integer('occupied_heating_setpoint')->nullable();
+            $table->float('local_temperature')->nullable();
+            $table->float('occupied_heating_setpoint')->nullable();
             $table->integer('pi_heating_demand')->nullable();
             $table->integer('power')->nullable();
             $table->string('running_state')->nullable();

@@ -11,10 +11,11 @@ class DeviceRequest extends FormRequest
         $startWithCapitalLetter = 'regex:/^[A-Z]/';
 
         return [
-            'friendlyName' => ['required', 'string', 'max:81'],
-            'set' => ['required', 'string', 'size:4', 'in:/set'],
-            'state' => ['required', 'string'],
-            'deviceModelClassName' => ['required', 'string', $startWithCapitalLetter],
+            'friendlyName' => 'required|string|max:81',
+            'set' => 'required|string|size:4|in:/set',
+            'state' => 'string',
+            'occupiedHeatingSetpoint' => 'numeric|min:15|max:24',
+            'deviceModelClassName' => "required|string|$startWithCapitalLetter",
         ];
     }
 }
