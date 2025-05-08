@@ -55,6 +55,9 @@ const logout = () => {
                                 <NavLink v-show="$page.props.permissions.lighting.viewDevices" :href="route('lighting.index')" :active="route().current('lighting.index')">
                                     {{ trans('lighting.lighting') }}
                                 </NavLink>
+                                <NavLink v-show="$page.props.permissions.heating.viewDevices" :href="route('heating.index')" :active="route().current('heating.index')">
+                                    {{ trans('heating.heating') }}
+                                </NavLink>
                             </div>
                         </div>
 

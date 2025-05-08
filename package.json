@@ -26,6 +26,7 @@
     "dependencies": {
         "@primevue/themes": "^4.0.7",
         "laravel-vue-i18n": "^2.7.7",
+        "primeicons": "^7.0.0",
         "primevue": "^4.0.7"
     }
 }

@@ -3,15 +3,17 @@
 namespace Database\Factories\Devices;
 
 use App\Models\Devices\Lighting;
+use Database\Factories\Traits\DeviceFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use Random\RandomException;
 
 /**
- * @extends <Lighting>
+ * @extends Factory<Lighting>
  */
 class LightingFactory extends Factory
 {
+    use DeviceFactoryTrait;
+
     /**
      * Define the model's default state.
      *
@@ -28,31 +30,5 @@ class LightingFactory extends Factory
             'power' => $this->faker->randomFloat(2, 0, 100),
             'state' => $this->faker->randomElement(['on', 'off']),
         ];
-    }
-
-    /**
-     * @throws RandomException
-     */
-    private function ieeeAddressFaker(): string
-    {
-        $hexPart = bin2hex(random_bytes(8));
-
-        return '0x' . $hexPart;
-    }
-
-    private function friendlyNameFaker(): string
-    {
-        /**
-         * @throws RandomException
-         */
-        $randomWord = fn () => Str::lower(Str::random(random_int(3, 10)));
-
-        return implode('/', [
-            $randomWord(),
-            $randomWord(),
-            $randomWord(),
-            $randomWord() . '_' . $randomWord(),
-            $randomWord() . '_' . $randomWord(),
-        ]);
     }
 }

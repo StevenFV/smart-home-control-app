@@ -18,8 +18,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
 
-        $this->callWith(StoreDevicesIdentificationSeeder::class, [
-            'deviceModelClassName' => DeviceModelClassName::Lighting->value,
-        ]);
+        foreach (DeviceModelClassName::cases() as $deviceModelClassName) {
+            $this->callWith(StoreDevicesIdentificationSeeder::class, [
+                'deviceModelClassName' => $deviceModelClassName,
+            ]);
+        }
     }
 }

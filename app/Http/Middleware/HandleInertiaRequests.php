@@ -45,6 +45,10 @@ class HandleInertiaRequests extends Middleware
                     PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Permission::class),
                     PermissionEnums::ControlDevices->value => $request->user()->can(PermissionEnums::ControlDevices->value, Permission::class),
                 ],
+                'heating' => [
+                    PermissionEnums::ViewDevices->value => $request->user()->can(PermissionEnums::ViewDevices->value, Permission::class),
+                    PermissionEnums::ControlDevices->value => $request->user()->can(PermissionEnums::ControlDevices->value, Permission::class),
+                ],
             ] : null,
         ];
     }
