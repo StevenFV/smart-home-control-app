@@ -3,7 +3,7 @@
 use App\Models\Devices\Lighting;
 use Carbon\Carbon;
 
-it('creates lighting model successfully', function () {
+test('creates lighting model successfully', function () {
     $lighting = Lighting::factory()->create();
 
     $this->assertDatabaseHas('devices.lights', [
@@ -19,7 +19,7 @@ it('creates lighting model successfully', function () {
     ]);
 });
 
-it('updates lighting model successfully', function () {
+test('updates lighting model successfully', function () {
     $lighting = Lighting::factory()->create();
 
     $originalTime = Carbon::now();
@@ -40,7 +40,7 @@ it('updates lighting model successfully', function () {
     ]);
 });
 
-it('deletes lighting model successfully', function () {
+test('deletes lighting model successfully', function () {
     $lighting = Lighting::factory()->create();
 
     $lighting->delete();

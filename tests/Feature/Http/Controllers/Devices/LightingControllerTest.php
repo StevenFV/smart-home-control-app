@@ -2,7 +2,7 @@
 
 use App\Models\Devices\Lighting;
 
-it('returns correct lighting data', function () {
+test('returns correct lighting data', function () {
     $lighting = Lighting::factory()->create();
 
     expect($lighting->ieee_address)->toBeValidIeeeAddress()
