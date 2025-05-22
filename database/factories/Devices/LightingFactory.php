@@ -21,14 +21,16 @@ class LightingFactory extends Factory
      */
     public function definition(): array
     {
+        $state = $this->faker->randomElement(['on', 'off']);
+
         return [
             'ieee_address' => $this->ieeeAddressFaker(),
-            'friendly_name' => $this->friendlyNameFaker(),
-            'brightness' => $this->faker->numberBetween(0, 100),
-            'energy' => $this->faker->randomFloat(2, 0, 100),
-            'linkquality' => $this->faker->numberBetween(0, 100),
-            'power' => $this->faker->randomFloat(2, 0, 100),
-            'state' => $this->faker->randomElement(['on', 'off']),
+            'friendly_name' => $this->friendlyName ?: $this->friendlyNameFaker(),
+            'brightness' => $state === 'off' ? 0 : $this->faker->numberBetween(10, 100),
+            'energy' => $state === 'off' ? 0.12 : $this->faker->randomFloat(2, 10, 100),
+            'linkquality' => $this->faker->numberBetween(0, 200),
+            'power' => $state === 'off' ? 0 : $this->faker->randomFloat(2, 10, 100),
+            'state' => $state,
         ];
     }
 }

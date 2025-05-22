@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\DeviceModelClassName;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,12 +15,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
+            StoreDevicesIdentificationSeeder::class,
         ]);
-
-        foreach (DeviceModelClassName::cases() as $deviceModelClassName) {
-            $this->callWith(StoreDevicesIdentificationSeeder::class, [
-                'deviceModelClassName' => $deviceModelClassName,
-            ]);
-        }
     }
 }

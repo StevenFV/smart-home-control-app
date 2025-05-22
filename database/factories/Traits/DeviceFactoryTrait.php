@@ -8,6 +8,11 @@ use Random\RandomException;
 trait DeviceFactoryTrait
 {
     /**
+     * The current friendly name to use.
+     */
+    protected string $friendlyName = '';
+
+    /**
      * Generate a random IEEE address.
      *
      * @throws RandomException
@@ -17,6 +22,17 @@ trait DeviceFactoryTrait
         $hexPart = bin2hex(random_bytes(8));
 
         return '0x' . $hexPart;
+    }
+
+    /**
+     * Set the friendly name.
+     */
+    public function forFriendlyName(string $name): self
+    {
+        $modelInstance = $this->newInstance();
+        $modelInstance->friendlyName = $name;
+
+        return $modelInstance;
     }
 
     /**

@@ -21,17 +21,26 @@ class HeatingFactory extends Factory
      */
     public function definition(): array
     {
+        $localTemperature = $this->faker->randomFloat(1, 18, 28);
+        $occupiedHeatingSetpoint = $this->faker->randomFloat(1, 18, 25);
+        $energy = $localTemperature === $occupiedHeatingSetpoint ?
+            0.12 :
+            $this->faker->randomFloat(2, 10, 100);
+        $piHeatingDemand = $localTemperature >= $occupiedHeatingSetpoint
+            ? 0
+            : min(100, round(($occupiedHeatingSetpoint - $localTemperature) * 100));
+
         return [
             'ieee_address' => $this->ieeeAddressFaker(),
-            'friendly_name' => $this->friendlyNameFaker(),
-            'energy' => $this->faker->randomFloat(2, 0, 100),
+            'friendly_name' => $this->friendlyName ?: $this->friendlyNameFaker(),
+            'energy' => $energy,
             'keypad_lockout' => $this->faker->randomElement(['unlock', 'lock1', 'lock2']),
-            'linkquality' => $this->faker->numberBetween(0, 100),
-            'local_temperature' => $this->faker->randomFloat(1, 18, 28),
-            'occupied_heating_setpoint' => $this->faker->randomFloat(1, 18, 25),
-            'pi_heating_demand' => $this->faker->numberBetween(0, 100),
-            'power' => $this->faker->numberBetween(0, 100),
-            'running_state' => $this->faker->randomElement(['idle', 'heat']),
+            'linkquality' => $this->faker->numberBetween(0, 200),
+            'local_temperature' => $localTemperature,
+            'occupied_heating_setpoint' => $occupiedHeatingSetpoint,
+            'pi_heating_demand' => $piHeatingDemand,
+            'power' => $piHeatingDemand,
+            'running_state' => $piHeatingDemand < 10 ? 'idle' : 'heat',
             'system_mode' => 'heat',
             'temperature_display_mode' => $this->faker->randomElement(['celsius', 'fahrenheit']),
         ];
