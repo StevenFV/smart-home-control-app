@@ -29,7 +29,7 @@ class LightingFactory extends Factory
             'brightness' => $state === 'off' ? 0 : $this->faker->numberBetween(10, 100),
             'energy' => $state === 'off' ? 0.12 : $this->faker->randomFloat(2, 10, 100),
             'linkquality' => $this->faker->numberBetween(0, 200),
-            'power' => $state === 'off' ? 0 : $this->faker->randomFloat(2, 10, 100),
+            'power' => $state === 'off' ? 0.00 : $this->faker->randomFloat(2, 10, 100),
             'state' => $state,
         ];
     }

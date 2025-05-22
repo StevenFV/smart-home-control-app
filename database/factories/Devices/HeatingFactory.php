@@ -28,7 +28,7 @@ class HeatingFactory extends Factory
             $this->faker->randomFloat(2, 10, 100);
         $piHeatingDemand = $localTemperature >= $occupiedHeatingSetpoint
             ? 0
-            : min(100, round(($occupiedHeatingSetpoint - $localTemperature) * 100));
+            : (int) min(100, round(($occupiedHeatingSetpoint - $localTemperature) * 100));
 
         return [
             'ieee_address' => $this->ieeeAddressFaker(),
