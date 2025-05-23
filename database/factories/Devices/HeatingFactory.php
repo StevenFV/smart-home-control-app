@@ -14,6 +14,8 @@ class HeatingFactory extends Factory
 {
     use DeviceFactoryTrait;
 
+    protected ?float $occupiedHeatingSetpoint = null;
+
     /**
      * Define the model's default state.
      *
@@ -22,7 +24,7 @@ class HeatingFactory extends Factory
     public function definition(): array
     {
         $localTemperature = $this->faker->randomFloat(1, 18, 28);
-        $occupiedHeatingSetpoint = $this->faker->randomFloat(1, 18, 25);
+        $occupiedHeatingSetpoint = $this->occupiedHeatingSetpoint ?? $this->faker->randomElement(range(18.0, 25.0, 0.5));
         $energy = $localTemperature === $occupiedHeatingSetpoint ?
             0.12 :
             $this->faker->randomFloat(2, 10, 100);
@@ -42,7 +44,19 @@ class HeatingFactory extends Factory
             'power' => $piHeatingDemand,
             'running_state' => $piHeatingDemand < 10 ? 'idle' : 'heat',
             'system_mode' => 'heat',
-            'temperature_display_mode' => $this->faker->randomElement(['celsius', 'fahrenheit']),
+            'temperature_display_mode' => 'celsius',
         ];
+    }
+
+    /**
+     * Set the occupied heating setpoint.
+     */
+    public function withOccupiedHeatingSetpoint(float $occupiedHeatingSetpoint): self
+    {
+        $modelInstance = $this->newInstance();
+        $modelInstance->occupiedHeatingSetpoint = $occupiedHeatingSetpoint;
+
+
+        return $modelInstance;
     }
 }

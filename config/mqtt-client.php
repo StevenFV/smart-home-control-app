@@ -9,6 +9,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | MQTT FAKER
+    |--------------------------------------------------------------------------
+    |
+    | This setting controls whether the MQTT client should use live data from
+    | a real MQTT broker or fake-generated data.
+    | When set to true, fake data will be used instead of attempting real MQTT broker connections.
+    |
+    */
+    'faker' => env('MQTT_FAKER', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Default MQTT Connection
     |--------------------------------------------------------------------------
     |

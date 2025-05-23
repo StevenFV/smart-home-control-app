@@ -11,7 +11,7 @@ test('returns correct lighting data', function () {
         ->and($lighting->energy)->toBeFloat()
         ->and($lighting->linkquality)->toBeInt()
         ->and($lighting->power)->toBeFloat()
-        ->and($lighting->state)->toBeIn(['on', 'off'])
+        ->and($lighting->state)->toBeIn(['ON', 'OFF'])
         ->and($lighting->updated_at)->toBeInstanceOf(DateTime::class)
         ->and($lighting->created_at)->toBeInstanceOf(DateTime::class)
         ->and($lighting->id)->toBeInt();

@@ -5,6 +5,8 @@ namespace App\Console\Commands\Devices;
 use App\Enums\DeviceModelClassName;
 use App\Enums\Zigbee2MQTT;
 use App\Http\Requests\Devices\DeviceRequest;
+use App\Services\Devices\HeatingFakeDataService;
+use App\Services\Devices\LightingFakeDataService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -26,12 +28,26 @@ class PublishMessage extends Command
 
     public function handle(DeviceRequest $request): void
     {
+        if (config('mqtt-client.faker')) {
+            $this->storeFakeMessage($request);
+
+            return;
+        }
+
         $this->topic = $this->createTopic($request);
         $this->message = $this->createMessage($request);
         $this->deviceModelClassName = $this->getDeviceModelClassName($request);
 
         $this->publishMessage();
         $this->updateDeviceDataInDatabase();
+    }
+
+    private function storeFakeMessage(DeviceRequest $request): void
+    {
+        match ($request['deviceModelClassName']) {
+            DeviceModelClassName::Lighting->value => LightingFakeDataService::toggleLightingState($request),
+            DeviceModelClassName::Heating->value => HeatingFakeDataService::setOccupiedHeatingSetpoint($request),
+        };
     }
 
     private function createTopic(DeviceRequest $request): string

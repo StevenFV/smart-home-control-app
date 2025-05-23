@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
-            StoreDevicesIdentificationSeeder::class,
+            config('mqtt-client.faker') ? StoreDevicesFakeDataSeeder::class : StoreDevicesIdentificationSeeder::class,
         ]);
     }
 }

@@ -7,9 +7,6 @@ use Random\RandomException;
 
 trait DeviceFactoryTrait
 {
-    /**
-     * The current friendly name to use.
-     */
     protected string $friendlyName = '';
 
     /**

@@ -5,8 +5,11 @@ namespace App\Console\Commands\Devices;
 use App\Enums\Zigbee2MQTT;
 use App\Interfaces\Devices\DeviceStoreInterface;
 use App\Traits\Devices\DeviceModelNamespaceResolverTrait;
+use Artisan;
+use Database\Seeders\StoreDevicesFakeDataSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Uri;
 use PhpMqtt\Client\Exceptions\MqttClientException;
@@ -25,6 +28,12 @@ class StoreData extends Command implements DeviceStoreInterface
 
     public function handle(): void
     {
+        if (config('mqtt-client.faker')) {
+            $this->storeFakeData();
+
+            return;
+        }
+
         $deviceModelClassName = $this->argument('deviceModelClassName');
 
         $deviceModelClassNameWithNameSpace = $this->getDeviceModelClassNameWithNameSpace($deviceModelClassName);
@@ -32,6 +41,20 @@ class StoreData extends Command implements DeviceStoreInterface
         $deviceStoreData = app(self::class);
 
         $deviceStoreData->store($deviceModelClassNameWithNameSpace);
+    }
+
+    private function storeFakeData(): void
+    {
+        $cacheKey = 'store_devices_fake_data_seeder_last_run';
+        $lastRun = Cache::get($cacheKey);
+
+        if ($lastRun && now()->diffInMinutes($lastRun) < 15) {
+            return;
+        }
+
+        Cache::put($cacheKey, now(), 420);
+
+        Artisan::call('db:seed', ['--class' => StoreDevicesFakeDataSeeder::class]);
     }
 
     public function store(Model $model): void
